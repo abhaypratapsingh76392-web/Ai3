@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#05070c" />
+<title>Chat — FreeModel VIP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/theme.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='.5' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='url(%23g)'/%3E%3Cpath d='M16 6l2.9 7.1L26 16l-7.1 2.9L16 26l-2.9-7.1L6 16l7.1-2.9L16 6z' fill='%23fff'/%3E%3C/svg%3E" />
+<style>
+html,body{height:100%;overflow:hidden}
+.app{display:flex;height:100dvh;width:100%;position:relative}
+
+/* ============================ SIDEBAR ============================ */
+.side{
+  width:272px;flex:0 0 272px;display:flex;flex-direction:column;
+  background:linear-gradient(180deg,rgba(10,16,28,.97),rgba(5,8,14,.99));
+  border-right:1px solid var(--line);z-index:40;transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.side-head{padding:14px 14px 10px;display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:850;font-size:15px;letter-spacing:-.02em;min-width:0}
+.brand-mark{width:33px;height:33px;border-radius:10px;background:var(--grad);display:grid;place-items:center;flex:0 0 auto;box-shadow:0 10px 24px -12px rgba(99,102,241,.95)}
+.brand-mark svg{width:18px;height:18px;color:#fff}
+.new-chat{
+  margin:6px 14px 12px;display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:11px;border-radius:12px;border:1px solid rgba(99,102,241,.45);
+  background:rgba(99,102,241,.14);color:#cfd7ff;font-weight:700;font-size:13.6px;cursor:pointer;transition:.18s;
+}
+.new-chat:hover{background:rgba(99,102,241,.24);border-color:rgba(99,102,241,.7);transform:translateY(-1px)}
+.new-chat svg{width:17px;height:17px}
+.side-search{margin:0 14px 10px;position:relative}
+.side-search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--dim)}
+.side-search input{width:100%;padding:9px 11px 9px 33px;border-radius:10px;border:1px solid var(--line);background:rgba(4,8,15,.7);color:var(--txt);font-size:13px;font-family:inherit}
+.side-search input:focus{outline:none;border-color:rgba(99,102,241,.6)}
+.side-label{padding:6px 18px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:800;display:flex;justify-content:space-between;align-items:center}
+.chat-list{flex:1;overflow-y:auto;padding:2px 8px 10px}
+.chat-item{
+  display:flex;align-items:center;gap:9px;padding:9px 9px;border-radius:10px;cursor:pointer;
+  transition:background .15s;position:relative;group:chat;
+}
+.chat-item:hover{background:rgba(255,255,255,.055)}
+.chat-item.active{background:rgba(99,102,241,.17);box-shadow:inset 2px 0 0 var(--acc)}
+.chat-item .ci-ico{flex:0 0 auto;width:16px;height:16px;color:var(--dim);display:grid;place-items:center}
+.chat-item.active .ci-ico{color:#a5b4fc}
+.chat-item .ci-body{flex:1;min-width:0}
+.chat-item .ci-title{font-size:13.2px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#dbe5f5}
+.chat-item .ci-sub{font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-item .ci-actions{display:none;gap:3px}
+.chat-item:hover .ci-actions{display:flex}
+.chat-item.pinned .ci-ico{color:var(--gold)}
+.ci-btn{background:rgba(255,255,255,.08);border:none;color:var(--muted);width:23px;height:23px;border-radius:6px;cursor:pointer;display:grid;place-items:center}
+.ci-btn:hover{background:rgba(255,255,255,.16);color:#fff}
+.ci-btn svg{width:12px;height:12px}
+.chat-empty{padding:26px 16px;text-align:center;color:var(--dim);font-size:12.5px;line-height:1.7}
+
+.side-foot{padding:10px;border-top:1px solid var(--line)}
+.token-box{
+  display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(245,199,106,.14),rgba(99,102,241,.1));
+  border:1px solid rgba(245,199,106,.24);margin-bottom:9px;
+}
+.token-box .tb-ico{width:30px;height:30px;border-radius:9px;background:rgba(245,199,106,.18);display:grid;place-items:center;color:var(--gold);flex:0 0 auto}
+.token-box .tb-ico svg{width:16px;height:16px}
+.token-box .tb-v{font-size:14px;font-weight:800;letter-spacing:-.02em;color:#ffe2a8}
+.token-box .tb-l{font-size:10.4px;color:var(--dim);font-weight:650;letter-spacing:.05em;text-transform:uppercase}
+.user-chip{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:12px;cursor:pointer;transition:.15s}
+.user-chip:hover{background:rgba(255,255,255,.06)}
+.avatar{width:33px;height:33px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:800;font-size:13px;color:#fff;flex:0 0 auto;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.user-chip .uc-n{font-size:13px;font-weight:700;line-height:1.25}
+.user-chip .uc-p{font-size:10.8px;color:var(--gold);font-weight:700;text-transform:capitalize;letter-spacing:.03em}
+.user-chip .uc-more{margin-left:auto;color:var(--dim);display:grid;place-items:center}
+.user-chip .uc-more svg{width:16px;height:16px}
+
+/* ============================== MAIN ============================== */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative}
+.top{
+  height:60px;display:flex;align-items:center;gap:12px;padding:0 18px;
+  border-bottom:1px solid var(--line);background:rgba(6,10,18,.72);backdrop-filter:blur(16px);z-index:20;flex:0 0 auto;
+}
+.hamb{display:none;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#fff;width:36px;height:36px;border-radius:10px;cursor:pointer;place-items:center}
+.hamb svg{width:18px;height:18px}
+.top-title{font-size:14.4px;font-weight:750;letter-spacing:-.01em;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top-sub{font-size:11.4px;color:var(--dim)}
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:7px}
+.icon-btn{width:35px;height:35px;border-radius:10px;background:rgba(255,255,255,.055);border:1px solid var(--line);color:var(--muted);cursor:pointer;display:grid;place-items:center;transition:.15s}
+.icon-btn:hover{background:rgba(255,255,255,.11);color:#fff}
+.icon-btn svg{width:16px;height:16px}
+.pill{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:99px;font-size:11.8px;font-weight:700;border:1px solid var(--line-2);background:rgba(255,255,255,.05);color:var(--muted);cursor:pointer;transition:.16s}
+.pill:hover{background:rgba(255,255,255,.1);color:#fff}
+.pill svg{width:14px;height:14px}
+.pill.gold{color:#ffe2a8;border-color:rgba(245,199,106,.35);background:rgba(245,199,106,.13)}
+
+/* ============================ MESSAGES =========================== */
+.scroller{flex:1;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;position:relative}
+.msg-wrap{max-width:880px;margin:0 auto;padding:26px 22px 30px}
+
+/* welcome */
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:min(560px,calc(100dvh - 260px));text-align:center;padding:20px 0}
+.w-logo{width:62px;height:62px;border-radius:19px;background:var(--grad);display:grid;place-items:center;margin-bottom:22px;box-shadow:0 26px 60px -26px rgba(99,102,241,1);position:relative}
+.w-logo::after{content:"";position:absolute;inset:0;border-radius:19px;background:linear-gradient(140deg,rgba(255,255,255,.42),transparent 55%)}
+.w-logo svg{width:31px;height:31px;color:#fff;position:relative;z-index:1}
+.welcome h1{font-size:clamp(24px,3.2vw,34px);letter-spacing:-.04em;margin-bottom:10px}
+.welcome p{color:var(--muted);font-size:14.6px;max-width:520px;line-height:1.6}
+.starters{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:11px;width:100%;max-width:760px;margin-top:30px}
+.starter{
+  text-align:left;padding:15px;border-radius:14px;border:1px solid var(--line);
+  background:linear-gradient(165deg,rgba(16,24,40,.8),rgba(8,13,23,.85));cursor:pointer;transition:.2s;
+}
+.starter:hover{transform:translateY(-3px);border-color:rgba(99,102,241,.55);box-shadow:0 20px 44px -24px rgba(99,102,241,.8)}
+.starter .st-ico{width:31px;height:31px;border-radius:9px;display:grid;place-items:center;background:rgba(99,102,241,.16);color:#a5b4fc;margin-bottom:10px}
+.starter .st-ico svg{width:16px;height:16px}
+.starter .st-t{font-size:13.4px;font-weight:750;margin-bottom:3px}
+.starter .st-d{font-size:11.8px;color:var(--dim);line-height:1.5}
+
+/* message rows */
+.msg{display:flex;gap:13px;margin-bottom:24px;animation:msgIn .32s cubic-bezier(.2,.8,.3,1)}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.msg-av{width:31px;height:31px;border-radius:9px;flex:0 0 auto;display:grid;place-items:center;font-size:12px;font-weight:800;margin-top:2px}
+.msg-av.ai{background:var(--grad);color:#fff;box-shadow:0 8px 20px -10px rgba(99,102,241,.9)}
+.msg-av.ai svg{width:16px;height:16px}
+.msg-av.me{background:linear-gradient(135deg,#1d2a44,#131c2e);color:#a8bcd8;border:1px solid var(--line-2)}
+.msg-body{flex:1;min-width:0}
+.msg-head{display:flex;align-items:center;gap:9px;margin-bottom:7px;flex-wrap:wrap}
+.msg-name{font-size:13px;font-weight:750}
+.msg-model{font-size:10.6px;padding:2px 8px;border-radius:5px;background:rgba(99,102,241,.16);color:#b9c3ff;font-weight:700;letter-spacing:.02em}
+.msg-time{font-size:10.8px;color:var(--dim)}
+.msg-text{font-size:14.6px;line-height:1.72;color:#dfe8f8;word-wrap:break-word;overflow-wrap:anywhere}
+.msg-text p{margin:0 0 11px}
+.msg-text p:last-child{margin-bottom:0}
+.msg-text h1,.msg-text h2,.msg-text h3,.msg-text h4{font-size:16.5px;margin:18px 0 9px;font-weight:800;color:#fff}
+.msg-text ul,.msg-text ol{margin:0 0 11px;padding-left:22px}
+.msg-text li{margin-bottom:5px}
+.msg-text blockquote{border-left:3px solid var(--acc);padding:2px 0 2px 13px;color:var(--muted);margin:0 0 11px}
+.msg-text code.inl{font-family:var(--mono);font-size:12.8px;padding:2px 6px;border-radius:5px;background:rgba(99,102,241,.18);color:#c7d0ff}
+.msg-text a{color:#7dd3fc;text-decoration:underline;text-underline-offset:2px}
+.msg-text table.md-table{border-collapse:collapse;width:100%;margin:0 0 12px;font-size:13px}
+.msg-text table.md-table th,.msg-text table.md-table td{border:1px solid var(--line-2);padding:7px 10px;text-align:left}
+.msg-text table.md-table th{background:rgba(99,102,241,.14);font-weight:750}
+.code-block{border-radius:12px;overflow:hidden;border:1px solid var(--line-2);background:#05090f;margin:0 0 12px}
+.code-head{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:rgba(255,255,255,.04);border-bottom:1px solid var(--line);font-size:11px;color:var(--dim);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.code-copy{display:flex;align-items:center;gap:5px;background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;padding:3px 7px;border-radius:5px;font-weight:650;font-family:inherit}
+.code-copy:hover{background:rgba(255,255,255,.1);color:#fff}
+.code-copy svg{width:12px;height:12px}
+.code-block pre{margin:0;padding:13px;overflow-x:auto;font-family:var(--mono);font-size:12.7px;line-height:1.65;color:#c8e1ff}
+.msg-attach{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.att-chip{display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:11.6px;color:var(--muted)}
+.att-chip svg{width:13px;height:13px;color:var(--acc-2)}
+.att-img{width:74px;height:74px;border-radius:10px;object-fit:cover;border:1px solid var(--line-2);cursor:zoom-in}
+.msg-tools{display:flex;gap:4px;margin-top:9px;opacity:0;transition:opacity .18s}
+.msg:hover .msg-tools{opacity:1}
+.mtool{background:none;border:none;color:var(--dim);cursor:pointer;padding:5px;border-radius:6px;display:grid;place-items:center;transition:.15s}
+.mtool:hover{background:rgba(255,255,255,.08);color:#fff}
+.mtool svg{width:14px;height:14px}
+.mtool.on{color:var(--ok)}
+
+.typing{display:inline-flex;gap:4px;align-items:center;padding:4px 0}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--acc-2);animation:tp 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.16s}
+.typing i:nth-child(3){animation-delay:.32s}
+@keyframes tp{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+.err-bubble{border:1px solid rgba(251,113,133,.4);background:rgba(251,113,133,.08);border-radius:12px;padding:12px 14px;font-size:13.4px;color:#ffc3cc;display:flex;gap:10px;align-items:flex-start}
+.err-bubble svg{width:17px;height:17px;flex:0 0 auto;margin-top:1px}
+
+/* ============================= COMPOSER ========================== */
+.composer-zone{padding:0 22px 14px;flex:0 0 auto;background:linear-gradient(180deg,transparent,rgba(5,8,14,.9) 40%)}
+.composer{max-width:880px;margin:0 auto;border-radius:19px;border:1px solid var(--line-2);background:rgba(11,17,29,.96);box-shadow:0 16px 44px -22px rgba(0,0,0,.95);transition:border-color .2s,box-shadow .2s;position:relative}
+.composer:focus-within{border-color:rgba(99,102,241,.62);box-shadow:0 16px 50px -22px rgba(99,102,241,.6)}
+.att-tray{display:flex;gap:8px;flex-wrap:wrap;padding:11px 13px 0}
+.att-pill{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:9px;background:rgba(99,102,241,.13);border:1px solid rgba(99,102,241,.3);font-size:11.6px;max-width:230px}
+.att-pill img{width:24px;height:24px;border-radius:5px;object-fit:cover}
+.att-pill .apn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#cfd9ee}
+.att-pill button{background:none;border:none;color:var(--muted);cursor:pointer;display:grid;place-items:center;padding:1px}
+.att-pill button:hover{color:var(--err)}
+.att-pill svg{width:12px;height:12px}
+.composer-row{display:flex;align-items:flex-end;gap:8px;padding:10px 11px}
+.composer textarea{
+  flex:1;background:none;border:none;color:var(--txt);font-family:inherit;font-size:14.8px;line-height:1.55;
+  resize:none;padding:9px 4px;max-height:200px;min-height:24px;outline:none;
+}
+.composer textarea::placeholder{color:#5b6f8d}
+.comp-btn{width:36px;height:36px;border-radius:10px;border:1px solid transparent;background:rgba(255,255,255,.06);color:var(--muted);display:grid;place-items:center;cursor:pointer;transition:.16s;flex:0 0 auto}
+.comp-btn:hover{background:rgba(255,255,255,.13);color:#fff}
+.comp-btn svg{width:17px;height:17px}
+.comp-btn.send{background:var(--grad);color:#fff;box-shadow:0 8px 22px -10px rgba(99,102,241,1)}
+.comp-btn.send:hover{transform:translateY(-1px)}
+.comp-btn.send:disabled{opacity:.45;box-shadow:none;transform:none;cursor:not-allowed}
+.comp-btn.rec{color:var(--err);background:rgba(251,113,133,.14);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(251,113,133,.12)}}
+.comp-meta{display:flex;align-items:center;gap:10px;padding:0 13px 11px;font-size:11px;color:var(--dim);flex-wrap:wrap}
+.comp-meta .sel-chip{display:flex;align-items:center;gap:6px;padding:4px 9px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-weight:650;color:var(--muted);cursor:pointer}
+.comp-meta .sel-chip:hover{background:rgba(255,255,255,.1);color:#fff}
+.comp-meta .sel-chip svg{width:12px;height:12px}
+.model-pick{display:flex;align-items:center;gap:7px;padding:5px 10px;border-radius:9px;background:rgba(99,102,241,.14);border:1px solid rgba(99,102,241,.34);cursor:pointer;font-size:11.8px;font-weight:700;color:#c7d0ff}
+.model-pick:hover{background:rgba(99,102,241,.24)}
+.model-pick .m-ico svg{width:13px;height:13px}
+.disc{text-align:center;font-size:10.8px;color:#4d5f7a;padding:8px 0 2px}
+
+/* model dropdown */
+.model-menu{
+  position:absolute;bottom:calc(100% + 9px);left:0;width:min(430px,calc(100vw - 44px));max-height:420px;overflow-y:auto;
+  background:rgba(10,16,28,.99);border:1px solid var(--line-2);border-radius:16px;box-shadow:var(--shadow);
+  padding:9px;z-index:80;display:none;animation:menuIn .18s
+}
+.model-menu.open{display:block}
+@keyframes menuIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.mm-head{font-size:10.6px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:800;padding:7px 9px 6px}
+.mm-item{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:10px;cursor:pointer;transition:.14s}
+.mm-item:hover{background:rgba(255,255,255,.07)}
+.mm-item.sel{background:rgba(99,102,241,.16)}
+.mm-logo{width:31px;height:31px;border-radius:9px;display:grid;place-items:center;flex:0 0 auto}
+.mm-logo svg{width:16px;height:16px}
+.mm-body{flex:1;min-width:0}
+.mm-n{font-size:13px;font-weight:700}
+.mm-d{font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mm-tier{font-size:9.6px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:5px}
+
+/* ============================ SIDE PANELS ======================== */
+.backdrop{position:fixed;inset:0;background:rgba(3,6,12,.6);backdrop-filter:blur(4px);z-index:45;display:none}
+.backdrop.show{display:block}
+.sheet{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:linear-gradient(180deg,#0a1120,#060a13);border-left:1px solid var(--line-2);z-index:50;transform:translateX(102%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-30px 0 80px -40px #000}
+.sheet.open{transform:none}
+.sheet-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.sheet-body{flex:1;overflow-y:auto;padding:18px}
+.sheet-title{font-size:15px;font-weight:800}
+.tabbar{display:flex;gap:4px;padding:5px;background:rgba(6,10,20,.8);border:1px solid var(--line);border-radius:12px;margin-bottom:18px;overflow-x:auto}
+.tabbar button{flex:1;min-width:76px;padding:8px;border:none;border-radius:8px;background:transparent;color:var(--muted);font-size:12.6px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
+.tabbar button.active{background:var(--grad);color:#fff}
+.sec-t{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:800;margin:20px 0 10px}
+.sec-t:first-child{margin-top:0}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid rgba(120,150,200,.09)}
+.set-row:last-child{border:0}
+.set-l{font-size:13.2px;font-weight:600}
+.set-s{font-size:11.4px;color:var(--dim);margin-top:2px;line-height:1.45}
+.usage-bar{height:7px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:9px}
+.usage-bar i{display:block;height:100%;background:var(--grad);border-radius:99px;transition:width .4s}
+.plan-hero{padding:16px;border-radius:14px;background:linear-gradient(135deg,rgba(245,199,106,.16),rgba(99,102,241,.13));border:1px solid rgba(245,199,106,.28);margin-bottom:14px}
+.plan-hero .ph-n{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:800}
+.plan-hero .ph-v{font-size:19px;font-weight:850;letter-spacing:-.03em;margin-top:3px}
+.plan-hero .ph-s{font-size:11.8px;color:var(--dim);margin-top:3px}
+
+.plan-list{display:flex;flex-direction:column;gap:9px}
+.plan-item{padding:14px;border-radius:13px;border:1px solid var(--line);background:rgba(255,255,255,.022);position:relative}
+.plan-item.cur{border-color:rgba(52,211,153,.42);background:rgba(52,211,153,.07)}
+.plan-item .pi-n{font-size:13.6px;font-weight:750}
+.plan-item .pi-p{font-size:17px;font-weight:850;letter-spacing:-.03em;margin-top:2px}
+.plan-item .pi-t{font-size:11.4px;color:var(--gold);font-weight:700}
+.plan-item .pi-perks{list-style:none;padding:0;margin:9px 0 11px;display:flex;flex-direction:column;gap:5px}
+.plan-item .pi-perks li{font-size:11.7px;color:var(--muted);display:flex;gap:6px}
+.plan-item .pi-perks svg{width:12px;height:12px;color:var(--ok);flex:0 0 auto;margin-top:3px}
+.pay-modes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pay-mode{flex:1;min-width:88px;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);text-align:center;font-size:11.6px;font-weight:700;cursor:pointer;color:var(--muted)}
+.pay-mode.sel{border-color:rgba(99,102,241,.62);background:rgba(99,102,241,.16);color:#cfd7ff}
+.upi-box{text-align:center;padding:16px;border-radius:13px;border:1px dashed rgba(245,199,106,.4);background:rgba(245,199,106,.07);margin-bottom:14px}
+.upi-box .upi-id{font-family:var(--mono);font-size:15px;font-weight:750;color:#ffe2a8;margin:7px 0;word-break:break-all}
+.upi-qr{width:170px;height:170px;margin:10px auto;border-radius:12px;background:#fff;padding:8px;display:grid;place-items:center}
+.upi-qr img{width:100%;height:100%;object-fit:contain}
+.pay-hist{display:flex;flex-direction:column;gap:8px}
+.pay-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.022);font-size:12px}
+.pay-row .pr-n{font-weight:700}
+.pay-row .pr-d{font-size:10.8px;color:var(--dim)}
+
+/* drop overlay */
+.drop-zone{position:absolute;inset:0;z-index:70;background:rgba(5,10,20,.9);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;border:2px dashed rgba(99,102,241,.7);border-radius:0;margin:8px}
+.drop-zone.on{display:flex}
+.drop-inner{text-align:center;color:#cfd7ff}
+.drop-inner svg{width:46px;height:46px;margin-bottom:12px;color:var(--acc-2)}
+
+/* image lightbox */
+.lightbox{position:fixed;inset:0;z-index:950;background:rgba(2,4,8,.94);display:none;align-items:center;justify-content:center;padding:26px;cursor:zoom-out}
+.lightbox.on{display:flex}
+.lightbox img{max-width:100%;max-height:100%;border-radius:12px;box-shadow:0 40px 100px -40px #000}
+
+/* mobile */
+@media(max-width:900px){
+  .side{position:fixed;top:0;left:0;bottom:0;transform:translateX(-102%);box-shadow:20px 0 60px -30px #000}
+  .side.open{transform:none}
+  .hamb{display:grid}
+  .msg-wrap{padding:18px 15px 20px}
+  .composer-zone{padding:0 12px 10px}
+  .msg-text{font-size:14.2px}
+  .top{padding:0 12px;height:56px}
+  .top-title{font-size:13.4px}
+  .starters{grid-template-columns:1fr 1fr}
+  .welcome{min-height:auto;padding:26px 0 10px}
+  .hide-sm{display:none !important}
+}
+@media(max-width:520px){
+  .starters{grid-template-columns:1fr}
+  .msg-av{width:26px;height:26px;border-radius:7px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- ============================ SIDEBAR ============================ -->
+  <aside class="side" id="side">
+    <div class="side-head">
+      <a class="brand" href="/"><span class="brand-mark" id="brandMark"></span><span id="brandName" class="ellipsis">FreeModel VIP</span></a>
+    </div>
+    <button class="new-chat" id="newChat"><span id="ncIco"></span> New chat</button>
+    <div class="side-search">
+      <span id="ssIco"></span>
+      <input id="chatSearch" placeholder="Search chats…" autocomplete="off" />
+    </div>
+    <div class="side-label"><span>History</span><span id="chatCount"></span></div>
+    <div class="chat-list" id="chatList"></div>
+    <div class="side-foot">
+      <div class="token-box">
+        <span class="tb-ico" id="tbIco"></span>
+        <div class="grow">
+          <div class="tb-v" id="tokenVal">—</div>
+          <div class="tb-l">tokens left</div>
+        </div>
+        <button class="btn btn-gold btn-xs" id="upgradeBtn">Upgrade</button>
+      </div>
+      <div class="user-chip" id="userChip">
+        <span class="avatar" id="userAvatar">U</span>
+        <div class="grow" style="min-width:0">
+          <div class="uc-n ellipsis" id="userName">User</div>
+          <div class="uc-p" id="userPlan">free plan</div>
+        </div>
+        <span class="uc-more" id="ucMore"></span>
+      </div>
+    </div>
+  </aside>
+  <div class="backdrop" id="sideBackdrop"></div>
+
+  <!-- ============================== MAIN ============================= -->
+  <main class="main">
+    <header class="top">
+      <button class="hamb" id="hamb"></button>
+      <div style="min-width:0">
+        <div class="top-title" id="topTitle">New chat</div>
+        <div class="top-sub" id="topSub">Ready when you are</div>
+      </div>
+      <div class="top-actions">
+        <button class="pill gold hide-sm" id="tokenPill" title="Tokens remaining"><span id="tpIco"></span><span id="tokenPillVal">—</span></button>
+        <button class="icon-btn" id="histBtn" title="History"></button>
+        <button class="icon-btn" id="setBtn" title="Settings"></button>
+      </div>
+    </header>
+
+    <div class="scroller" id="scroller">
+      <div class="msg-wrap" id="msgWrap"></div>
+    </div>
+
+    <div class="composer-zone">
+      <div class="composer" id="composer">
+        <div class="att-tray" id="attTray"></div>
+        <div class="composer-row">
+          <button class="comp-btn" id="attachBtn" title="Attach files"></button>
+          <textarea id="prompt" rows="1" placeholder="Ask anything… (Shift + Enter for a new line)"></textarea>
+          <button class="comp-btn" id="micBtn" title="Voice input"></button>
+          <button class="comp-btn send" id="sendBtn" title="Send"></button>
+        </div>
+        <div class="comp-meta">
+          <span class="model-pick" id="modelPick"><span class="m-ico" id="mpIco"></span><span id="mpName">Auto</span><span id="mpChev"></span></span>
+          <span style="margin-left:auto" id="costHint"></span>
+        </div>
+        <div class="model-menu" id="modelMenu"></div>
+      </div>
+      <div class="disc">AI can make mistakes. Verify important information.</div>
+    </div>
+
+    <div class="drop-zone" id="dropZone">
+      <div class="drop-inner">
+        <div id="dropIco"></div>
+        <div style="font-size:16px;font-weight:750">Drop files to attach</div>
+        <div class="small dim" style="margin-top:6px" id="dropHint">PDF, text, code and images</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================ SETTINGS SHEET ==================== -->
+  <div class="sheet" id="settingsSheet">
+    <div class="sheet-head">
+      <div class="sheet-title">Settings</div>
+      <button class="x-btn" style="margin-left:auto" data-close-sheet></button>
+    </div>
+    <div class="sheet-body">
+      <div class="tabbar" id="setTabs">
+        <button data-t="account" class="active">Account</button>
+        <button data-t="billing">Billing</button>
+        <button data-t="usage">Usage</button>
+        <button data-t="about">About</button>
+      </div>
+      <div id="setBody"></div>
+    </div>
+  </div>
+
+  <!-- ============================ HISTORY SHEET ===================== -->
+  <div class="sheet" id="historySheet">
+    <div class="sheet-head">
+      <div class="sheet-title">All chats</div>
+      <button class="x-btn" style="margin-left:auto" data-close-sheet></button>
+    </div>
+    <div class="sheet-body">
+      <div class="side-search" style="margin:0 0 14px"><span id="hsIco"></span><input id="histSearch" placeholder="Search every chat…" /></div>
+      <div id="histList"></div>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox"><img id="lightboxImg" alt="attachment" /></div>
+  <input type="file" id="fileInput" multiple style="display:none" />
+</div>
+
+<script src="/assets/js/icons.js"></script>
+<script src="/assets/js/core.js"></script>
+<script>
+(function () {
+  'use strict';
+  const { api, escapeHtml, escapeAttr, markdown, toast, confirm: confirmBox, num, timeAgo, fmtDate, money, copyText, debounce, store: ls } = APP;
+
+  /* ------------------------------- state -------------------------------- */
+  const S = {
+    user: null,
+    models: [],
+    plans: [],
+    settings: null,
+    chats: [],
+    chat: null,
+    modelId: ls.get('model', 'auto'),
+    attachments: [],
+    streaming: false,
+    dailyUsed: 0,
+    dailyLimit: 60,
+    cost: 0
+  };
+
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  /* ------------------------------ chrome -------------------------------- */
+  $('#brandMark').innerHTML = svgIcon('spark');
+  $('#ncIco').innerHTML = svgIcon('plus');
+  $('#ssIco').innerHTML = svgIcon('search');
+  $('#hsIco').innerHTML = svgIcon('search');
+  $('#tbIco').innerHTML = svgIcon('coins');
+  $('#ucMore').innerHTML = svgIcon('settings');
+  $('#hamb').innerHTML = svgIcon('menu');
+  $('#setBtn').innerHTML = svgIcon('settings');
+  $('#histBtn').innerHTML = svgIcon('history');
+  $('#tpIco').innerHTML = svgIcon('coins');
+  $('#attachBtn').innerHTML = svgIcon('clip');
+  $('#micBtn').innerHTML = svgIcon('mic');
+  $('#sendBtn').innerHTML = svgIcon('send');
+  $('#mpChev').innerHTML = svgIcon('chevron');
+  $('#dropIco').innerHTML = svgIcon('download');
+  $$('[data-close-sheet]').forEach((b) => (b.innerHTML = svgIcon('close')));
+
+  /* ------------------------------ helpers ------------------------------- */
+  function initials(name) {
+    return (name || 'U').trim().split(/\s+/).slice(0, 2).map((x) => x[0]).join('').toUpperCase();
+  }
+
+  function tierStyle(t) {
+    const k = String(t || 'pro').toLowerCase();
+    if (k === 'free') return 'background:rgba(52,211,153,.16);color:#6ee7b7';
+    if (k === 'plus') return 'background:rgba(34,211,238,.16);color:#67e8f9';
+    return 'background:rgba(245,199,106,.16);color:#f5c76a';
+  }
+
+  function modelById(id) {
+    return S.models.find((m) => m.id === id) || null;
+  }
+
+  function currentModel() {
+    if (S.modelId === 'auto') return { name: 'Auto', icon: 'spark', color: '#6366f1', id: 'auto', desc: 'Best available model' };
+    return modelById(S.modelId) || { name: 'Auto', icon: 'spark', color: '#6366f1', id: 'auto' };
+  }
+
+  /* ------------------------------ boot ---------------------------------- */
+  async function boot() {
+    try {
+      const me = await api('/auth/me');
+      S.user = me.user;
+      S.settings = me.settings;
+      APP.session.user = me.user;
+    } catch (e) {
+      if (e.status === 401) return (location.href = '/login');
+      toast(e.message || 'Could not load your session.', 'err');
+      return;
+    }
+
+    try {
+      const boot = await api('/bootstrap');
+      S.models = boot.models || [];
+      S.plans = boot.plans || [];
+      S.settings = boot.settings || S.settings;
+      if (boot.broadcast) toast(boot.broadcast.message, 'info', 7000);
+    } catch {}
+
+    renderUser();
+    await loadChats();
+    await loadUsage();
+    renderModelMenu();
+    updateModelPick();
+    renderWelcome();
+
+    const pending = ls.get('pending_prompt', '');
+    if (pending) {
+      ls.del('pending_prompt');
+      $('#prompt').value = pending;
+      autoGrow();
+    }
+    $('#prompt').focus();
+  }
+
+  function renderUser() {
+    const u = S.user;
+    if (!u) return;
+    $('#brandName').textContent = (S.settings && S.settings.brandName) || 'FreeModel VIP';
+    $('#userName').textContent = u.name || 'User';
+    const plan = S.plans.find((p) => p.id === u.plan);
+    $('#userPlan').textContent = (plan ? plan.name : u.plan || 'free') + ' plan';
+    const av = $('#userAvatar');
+    if (u.avatar) av.innerHTML = `<img src="${APP.escapeAttr(u.avatar)}" alt="" />`;
+    else av.textContent = initials(u.name);
+    document.title = `${(S.settings && S.settings.brandName) || 'FreeModel VIP'} — Chat`;
+  }
+
+  async function loadUsage() {
+    try {
+      const u = await api('/usage');
+      S.user.tokens = u.tokens;
+      S.user.tokensUsed = u.tokensUsed;
+      S.dailyUsed = u.dailyUsed;
+      S.dailyLimit = u.dailyLimit;
+      $('#tokenVal').textContent = num(u.tokens);
+      $('#tokenPillVal').textContent = num(u.tokens) + ' tokens';
+      updateCostHint();
+    } catch (e) {
+      console.warn(e);
+    }
+  }
+
+  /* ------------------------------- chats -------------------------------- */
+  async function loadChats() {
+    try {
+      const d = await api('/chats');
+      S.chats = d.chats || [];
+      renderChatList();
+    } catch (e) {
+      toast(e.message, 'err');
+    }
+  }
+
+  function chatRow(c, compact) {
+    const m = modelById(c.model) || { icon: 'spark', color: '#6366f1' };
+    return `<div class="chat-item ${S.chat && S.chat.id === c.id ? 'active' : ''} ${c.pinned ? 'pinned' : ''}" data-id="${c.id}">
+      <span class="ci-ico">${svgIcon(c.pinned ? 'pin' : 'chat')}</span>
+      <div class="ci-body">
+        <div class="ci-title">${escapeHtml(c.title || 'New chat')}</div>
+        <div class="ci-sub">${escapeHtml(c.modelName || 'Auto')} · ${c.messageCount || 0} msgs</div>
+      </div>
+      <div class="ci-actions">
+        <button class="ci-btn" data-pin="${c.id}" title="Pin">${svgIcon('pin')}</button>
+        <button class="ci-btn" data-del="${c.id}" title="Delete">${svgIcon('trash')}</button>
+      </div>
+    </div>`;
+  }
+
+  function renderChatList() {
+    const q = ($('#chatSearch').value || '').toLowerCase().trim();
+    const list = S.chats.filter((c) => !q || (c.title || '').toLowerCase().includes(q));
+    $('#chatCount').textContent = S.chats.length ? S.chats.length + ' chats' : '';
+    $('#chatList').innerHTML = list.length
+      ? list.map((c) => chatRow(c)).join('')
+      : `<div class="chat-empty">${q ? 'No chats match that search.' : 'No chats yet.<br>Start a new conversation above.'}</div>`;
+    bindChatRows();
+  }
+
+  function bindChatRows() {
+    $$('#chatList .chat-item').forEach((el) => {
+      el.onclick = (e) => {
+        if (e.target.closest('[data-pin]') || e.target.closest('[data-del]')) return;
+        openChat(el.dataset.id);
+      };
+    });
+    $$('#chatList [data-pin]').forEach((b) => {
+      b.onclick = async (e) => {
+        e.stopPropagation();
+        const c = S.chats.find((x) => x.id === b.dataset.pin);
+        try {
+          await api('/chats/' + b.dataset.pin, { method: 'PATCH', body: { pinned: !c.pinned } });
+          await loadChats();
+        } catch (err) {
+          toast(err.message, 'err');
+        }
+      };
+    });
+    $$('#chatList [data-del]').forEach((b) => {
+      b.onclick = async (e) => {
+        e.stopPropagation();
+        const ok = await confirmBox('Delete this chat permanently?', { ok: 'Delete', danger: true });
+        if (!ok) return;
+        try {
+          await api('/chats/' + b.dataset.del, { method: 'DELETE' });
+          if (S.chat && S.chat.id === b.dataset.del) newChat();
+          await loadChats();
+          toast('Chat deleted.', 'ok');
+        } catch (err) {
+          toast(err.message, 'err');
+        }
+      };
+    });
+  }
+
+  /* ------------------------------ messages ------------------------------ */
+  function renderWelcome() {
+    const name = (S.user && S.user.name ? S.user.name.split(' ')[0] : 'there');
+    const starters = [
+      { ic: 'bolt', t: 'Explain something complex', d: 'Break down a hard idea in simple words', p: 'Explain quantum entanglement like I am 12, with a fun analogy.' },
+      { ic: 'file', t: 'Summarise a document', d: 'Upload a PDF and ask questions', p: null, action: 'upload' },
+      { ic: 'chat', t: 'Write better copy', d: 'Landing page, email, ads — anything', p: 'Write a punchy landing page headline and hero copy for an AI chat app.' },
+      { ic: 'layers', t: 'Debug my code', d: 'Paste code and get a fix', p: 'Help me debug this code and explain the fix:' }
+    ];
+    $('#msgWrap').innerHTML = `
+      <div class="welcome">
+        <div class="w-logo">${svgIcon('spark')}</div>
+        <h1>Hi ${escapeHtml(name)}, what shall we build?</h1>
+        <p>Ask anything, upload a document, or pick one of these to get going. You have <b style="color:#ffe2a8">${num(S.user.tokens)}</b> tokens available.</p>
+        <div class="starters">
+          ${starters
+            .map(
+              (s) => `<button class="starter" data-starter="${escapeHtml(s.p || '')}" data-action="${s.action || ''}">
+                <span class="st-ico">${svgIcon(s.ic)}</span>
+                <span class="st-t">${escapeHtml(s.t)}</span>
+                <span class="st-d">${escapeHtml(s.d)}</span>
+              </button>`
+            )
+            .join('')}
+        </div>
+      </div>`;
+
+    $$('[data-starter]').forEach((b) => {
+      b.onclick = () => {
+        if (b.dataset.action === 'upload') return $('#fileInput').click();
+        $('#prompt').value = b.dataset.starter;
+        autoGrow();
+        $('#prompt').focus();
+      };
+    });
+  }
+
+  function avatarFor(role) {
+    if (role === 'user') return `<span class="msg-av me">${escapeHtml(initials(S.user && S.user.name))}</span>`;
+    return `<span class="msg-av ai">${svgIcon('spark')}</span>`;
+  }
+
+  function messageHtml(m, i) {
+    const isUser = m.role === 'user';
+    const atts = m.attachments || [];
+    const txtAtts = atts.filter((a) => a.kind !== 'image');
+    const imgAtts = atts.filter((a) => a.kind === 'image' && a.dataUrl);
+    return `<div class="msg" data-i="${i}">
+      ${avatarFor(m.role)}
+      <div class="msg-body">
+        <div class="msg-head">
+          <span class="msg-name">${isUser ? escapeHtml((S.user && S.user.name) || 'You') : 'FreeModel VIP'}</span>
+          ${!isUser && m.model ? `<span class="msg-model">${escapeHtml(m.model)}</span>` : ''}
+          <span class="msg-time">${m.createdAt ? timeAgo(m.createdAt) : ''}</span>
+        </div>
+        ${atts.length ? `<div class="msg-attach">
+            ${imgAtts.map((a) => `<img class="att-img" data-zoom="${escapeAttr(a.dataUrl || '')}" src="${escapeAttr(a.dataUrl || '')}" alt="${escapeAttr(a.name)}" />`).join('')}
+            ${atts.filter((a) => !(a.kind === 'image' && a.dataUrl)).map((a) => `<span class="att-chip">${svgIcon(a.kind === 'image' ? 'image' : 'file')}${escapeHtml(a.name)}</span>`).join('')}
+          </div>` : ''}
+        <div class="msg-text" data-raw="${escapeAttr(m.content || '')}">${isUser ? escapeHtml(m.content || '').replace(/\n/g, '<br>') : markdown(m.content || '')}</div>
+        ${!isUser ? `<div class="msg-tools">
+            <button class="mtool" data-copy="${i}" title="Copy">${svgIcon('copy')}</button>
+            <button class="mtool" data-regen="${i}" title="Regenerate">${svgIcon('refresh')}</button>
+            <button class="mtool" data-good="${i}" title="Good answer">${svgIcon('thumbUp')}</button>
+            <button class="mtool" data-bad="${i}" title="Bad answer">${svgIcon('thumbDown')}</button>
+          </div>` : ''}
+      </div>
+    </div>`;
+  }
+
+  function renderChat(chat) {
+    S.chat = chat;
+    $('#topTitle').textContent = chat ? chat.title : 'New chat';
+    $('#topSub').textContent = chat ? `${chat.modelName || 'Auto'} · ${(chat.messages || []).length} messages` : 'Ready when you are';
+
+    if (!chat || !(chat.messages || []).length) return renderWelcome();
+
+    $('#msgWrap').innerHTML = (chat.messages || []).map((m, i) => messageHtml(m, i)).join('');
+    bindMessageTools();
+    scrollBottom(true);
+  }
+
+  function bindMessageTools() {
+    $$('[data-copy]').forEach((b) => {
+      b.onclick = async () => {
+        const raw = b.closest('.msg').querySelector('.msg-text').dataset.raw || '';
+        await copyText(raw);
+        b.classList.add('on');
+        setTimeout(() => b.classList.remove('on'), 1400);
+        toast('Copied to clipboard.', 'ok', 1800);
+      };
+    });
+    $$('[data-regen]').forEach((b) => {
+      b.onclick = () => regenerate();
+    });
+    $$('[data-good]').forEach((b) => {
+      b.onclick = () => {
+        b.classList.add('on');
+        toast('Thanks for the feedback!', 'ok', 1800);
+      };
+    });
+    $$('[data-bad]').forEach((b) => {
+      b.onclick = () => {
+        toast('Noted — we will route similar prompts to a different model.', 'info', 2600);
+      };
+    });
+    $$('[data-zoom]').forEach((img) => {
+      img.onclick = () => {
+        $('#lightboxImg').src = img.dataset.zoom;
+        $('#lightbox').classList.add('on');
+      };
+    });
+  }
+
+  $('#lightbox').onclick = () => $('#lightbox').classList.remove('on');
+
+  function scrollBottom(instant, force) {
+    const sc = $('#scroller');
+    const nearBottom = sc.scrollHeight - sc.scrollTop - sc.clientHeight < 180;
+    if (!nearBottom && !force) return;
+    setTimeout(() => {
+      sc.scrollTo({ top: sc.scrollHeight, behavior: instant ? 'auto' : 'smooth' });
+    }, 30);
+  }
+
+  /* ------------------------------ composer ------------------------------ */
+  const ta = $('#prompt');
+  function autoGrow() {
+    ta.style.height = 'auto';
+    ta.style.height = Math.min(200, ta.scrollHeight) + 'px';
+  }
+  ta.addEventListener('input', () => {
+    autoGrow();
+    updateCostHint();
+  });
+  ta.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
+    }
+  });
+
+  function costFor(text) {
+    const s = S.settings || {};
+    const base = Number(s.tokensPerMessage || 15);
+    const extra = s.chargeByLength ? Math.ceil((String(text || '').length / 1000) * Number(s.tokensPer1kChars || 5)) : 0;
+    return Math.max(1, base + extra);
+  }
+
+  function updateCostHint() {
+    const cost = costFor(ta.value);
+    S.cost = cost;
+    const el = $('#costHint');
+    if (!ta.value.trim()) {
+      el.textContent = '';
+      return;
+    }
+    const left = Number(S.user && S.user.tokens) || 0;
+    el.innerHTML = `<span style="color:${left < cost ? '#fb7185' : '#93a7c4'}">~${cost} tokens</span> · <span class="dim">${num(left)} left</span>`;
+  }
+
+  /* ------------------------------- models ------------------------------- */
+  function renderModelMenu() {
+    const menu = $('#modelMenu');
+    const auto = `<div class="mm-item ${S.modelId === 'auto' ? 'sel' : ''}" data-model="auto">
+        <span class="mm-logo" style="background:rgba(99,102,241,.2);color:#a5b4fc">${svgIcon('spark')}</span>
+        <div class="mm-body"><div class="mm-n">Auto routing</div><div class="mm-d">Let FreeModel pick the fastest healthy model</div></div>
+        <span class="mm-tier" style="background:rgba(99,102,241,.18);color:#c7d0ff">Smart</span>
+      </div>`;
+    const items = S.models
+      .map(
+        (m) => `<div class="mm-item ${S.modelId === m.id ? 'sel' : ''}" data-model="${m.id}">
+          <span class="mm-logo" style="background:${hexA(m.color, 0.16)};color:${m.color}">${svgIcon(m.icon)}</span>
+          <div class="mm-body"><div class="mm-n">${escapeHtml(m.name)}</div><div class="mm-d">${escapeHtml(m.desc || m.vendor)}</div></div>
+          <span class="mm-tier" style="${tierStyle(m.tier)}">${escapeHtml(m.tier || 'Pro')}</span>
+        </div>`
+      )
+      .join('');
+    menu.innerHTML = `<div class="mm-head">Choose a model</div>${auto}<div class="mm-head">${S.models.length} models available</div>${items}`;
+    menu.querySelectorAll('[data-model]').forEach((el) => {
+      el.onclick = () => {
+        S.modelId = el.dataset.model;
+        ls.set('model', S.modelId);
+        updateModelPick();
+        renderModelMenu();
+        menu.classList.remove('open');
+        if (S.chat) api('/chats/' + S.chat.id, { method: 'PATCH', body: { model: S.modelId === 'auto' ? undefined : S.modelId } }).catch(() => {});
+      };
+    });
+  }
+
+  function hexA(hex, a) {
+    const h = String(hex || '#6366f1').replace('#', '');
+    const f = h.length === 3 ? h.split('').map((x) => x + x).join('') : h;
+    return `rgba(${parseInt(f.slice(0, 2), 16) || 99},${parseInt(f.slice(2, 4), 16) || 102},${parseInt(f.slice(4, 6), 16) || 241},${a})`;
+  }
+
+  function updateModelPick() {
+    const m = currentModel();
+    $('#mpIco').innerHTML = svgIcon(m.icon);
+    $('#mpIco').style.color = m.color;
+    $('#mpName').textContent = m.name;
+  }
+
+  $('#modelPick').onclick = () => $('#modelMenu').classList.toggle('open');
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#modelPick') && !e.target.closest('#modelMenu')) $('#modelMenu').classList.remove('open');
+  });
+
+  /* ----------------------------- attachments ---------------------------- */
+  function fmtSize(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1048576) return (b / 1024).toFixed(0) + ' KB';
+    return (b / 1048576).toFixed(1) + ' MB';
+  }
+
+  function renderAttachments() {
+    const tray = $('#attTray');
+    tray.innerHTML = S.attachments
+      .map(
+        (a, i) => `<span class="att-pill">
+          ${a.kind === 'image' && a.dataUrl ? `<img src="${escapeAttr(a.dataUrl)}" alt="" />` : svgIcon('file')}
+          <span class="apn">${escapeHtml(a.name)}</span>
+          <span class="dim" style="font-size:10px">${fmtSize(a.size)}</span>
+          <button data-rm="${i}">${svgIcon('close')}</button>
+        </span>`
+      )
+      .join('');
+    tray.querySelectorAll('[data-rm]').forEach((b) => {
+      b.onclick = () => {
+        S.attachments.splice(Number(b.dataset.rm), 1);
+        renderAttachments();
+      };
+    });
+  }
+
+  async function uploadFiles(files) {
+    if (!files || !files.length) return;
+    const maxMb = Number((S.settings && S.settings.maxUploadMb) || 10);
+    const maxCount = Number((S.settings && S.settings.maxUploadsPerChat) || 6);
+    if (S.attachments.length + files.length > maxCount) {
+      return toast(`You can attach up to ${maxCount} files per message.`, 'err');
+    }
+    const fd = new FormData();
+    Array.from(files).forEach((f) => {
+      if (f.size > maxMb * 1024 * 1024) return toast(`${f.name} is larger than ${maxMb}MB.`, 'err');
+      fd.append('files', f);
+    });
+    const t = toast('Uploading…', 'info', 1200);
+    try {
+      const out = await api('/upload', { body: fd });
+      (out.files || []).forEach((f) => {
+        if (!f.ok) return toast(f.reason || `${f.name} could not be read.`, 'err');
+        S.attachments.push(f);
+      });
+      renderAttachments();
+    } catch (e) {
+      toast(e.message, 'err');
+    }
+  }
+
+  $('#attachBtn').onclick = () => $('#fileInput').click();
+  $('#fileInput').onchange = (e) => {
+    uploadFiles(e.target.files);
+    e.target.value = '';
+  };
+
+  /* drag & drop */
+  let dragDepth = 0;
+  const dz = $('#dropZone');
+  ['dragenter', 'dragover'].forEach((ev) =>
+    document.addEventListener(ev, (e) => {
+      e.preventDefault();
+      dragDepth++;
+      dz.classList.add('on');
+    })
+  );
+  ['dragleave', 'drop'].forEach((ev) =>
+    document.addEventListener(ev, (e) => {
+      e.preventDefault();
+      if (ev === 'drop') uploadFiles(e.dataTransfer.files);
+      dragDepth = Math.max(0, dragDepth - 1);
+      if (!dragDepth) dz.classList.remove('on');
+    })
+  );
+  dz.addEventListener('click', () => dz.classList.remove('on'));
+
+  /* paste image support */
+  document.addEventListener('paste', (e) => {
+    const items = Array.from(e.clipboardData?.items || []);
+    const imgs = items.filter((i) => i.kind === 'file').map((i) => i.getAsFile()).filter(Boolean);
+    if (imgs.length) uploadFiles(imgs);
+  });
+
+  /* ------------------------------ voice input --------------------------- */
+  let recog = null;
+  $('#micBtn').onclick = () => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) return toast('Voice input is not supported in this browser.', 'err');
+    if (recog) {
+      recog.stop();
+      recog = null;
+      $('#micBtn').classList.remove('rec');
+      return;
+    }
+    recog = new SR();
+    recog.lang = 'en-IN';
+    recog.interimResults = true;
+    recog.continuous = false;
+    const startVal = ta.value;
+    recog.onresult = (ev) => {
+      let txt = '';
+      for (let i = ev.resultIndex; i < ev.results.length; i++) txt += ev.results[i][0].transcript;
+      ta.value = (startVal + ' ' + txt).trim();
+      autoGrow();
+      updateCostHint();
+    };
+    recog.onerror = () => toast('Could not access the microphone.', 'err');
+    recog.onend = () => {
+      recog = null;
+      $('#micBtn').classList.remove('rec');
+    };
+    $('#micBtn').classList.add('rec');
+    recog.start();
+  };
+
+  /* -------------------------------- send -------------------------------- */
+  async function send() {
+    const text = ta.value.trim();
+    if (S.streaming) return;
+    if (!text && !S.attachments.length) return;
+
+    const cost = costFor(text);
+    if (Number(S.user.tokens) < cost) {
+      return openPaywall();
+    }
+
+    /* make sure a real chat exists first so the thread continues */
+    if (!S.chat) {
+      try {
+        const made = await api('/chats', { body: { title: text.slice(0, 60) || 'New chat', model: S.modelId === 'auto' ? undefined : S.modelId } });
+        S.chat = made.chat;
+      } catch (e) {
+        return toast(e.message || 'Could not start the chat.', 'err');
+      }
+    }
+
+    const payload = {
+      message: text,
+      chatId: S.chat ? S.chat.id : null,
+      model: S.modelId === 'auto' ? undefined : S.modelId,
+      attachments: S.attachments,
+      stream: true
+    };
+
+    /* optimistic UI */
+    if (!S.chat || !(S.chat.messages || []).length) {
+      $('#msgWrap').innerHTML = '';
+    }
+    const now = Date.now();
+    const userMsg = { role: 'user', content: text, attachments: S.attachments.slice(), createdAt: now };
+    appendMessage(userMsg, null);
+    const aiEl = appendMessage({ role: 'assistant', content: '', model: currentModel().name, createdAt: now }, null, true);
+
+    ta.value = '';
+    autoGrow();
+    S.attachments = [];
+    renderAttachments();
+    updateCostHint();
+    S.streaming = true;
+    $('#sendBtn').disabled = true;
+
+    try {
+      const token = APP.session.token;
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', authorization: 'Bearer ' + token },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'Request failed' }));
+        throw Object.assign(new Error(err.error || 'Request failed'), { code: err.code, data: err });
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let full = '';
+      let provider = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split('\n\n');
+        buffer = events.pop() || '';
+        for (const evt of events) {
+          const lines = evt.split('\n');
+          let type = 'message';
+          let data = '';
+          for (const l of lines) {
+            if (l.startsWith('event:')) type = l.slice(6).trim();
+            else if (l.startsWith('data:')) data += l.slice(5).trim();
+          }
+          if (!data) continue;
+          let json;
+          try {
+            json = JSON.parse(data);
+          } catch {
+            continue;
+          }
+          if (type === 'meta') {
+            provider = json.provider || '';
+            aiEl.querySelector('.msg-model').textContent = `${currentModel().name}`;
+          } else if (type === 'error') {
+            throw new Error(json.error || 'The AI is unavailable.');
+          } else if (json.delta) {
+            full += json.delta;
+            renderStreaming(aiEl, full);
+          }
+        }
+      }
+
+      renderStreaming(aiEl, full, true);
+      const txt = aiEl.querySelector('.msg-text');
+      txt.dataset.raw = full;
+      addTools(aiEl);
+      if (S.chat) {
+        S.chat.messages = [...(S.chat.messages || []), userMsg, { role: 'assistant', content: full, model: currentModel().name, createdAt: Date.now() }];
+        S.chat.updatedAt = Date.now();
+        if (!S.chat.title || S.chat.title === 'New chat') S.chat.title = text.slice(0, 60);
+        $('#topTitle').textContent = S.chat.title;
+      }
+      await loadChats();
+      await loadUsage();
+      if (provider) $('#topSub').textContent = `${currentModel().name} · served by ${provider}`;
+    } catch (e) {
+      removeEl(aiEl);
+      showErrorBubble(e.message || 'Something went wrong.');
+      if (e.code === 'no_tokens') setTimeout(openPaywall, 600);
+      await loadUsage();
+    } finally {
+      S.streaming = false;
+      $('#sendBtn').disabled = false;
+      scrollBottom();
+    }
+  }
+
+  let streamFrame = null;
+  let streamPending = null;
+  function renderStreaming(el, text, done) {
+    const txt = el.querySelector('.msg-text');
+    txt.dataset.raw = text;
+    const paint = () => {
+      streamFrame = null;
+      txt.innerHTML =
+        markdown(text) +
+        (done
+          ? ''
+          : '<span style="display:inline-block;width:7px;height:14px;background:#22d3ee;border-radius:2px;vertical-align:-2px;animation:blink 1s steps(2) infinite"></span>');
+      scrollBottom();
+    };
+    if (done) {
+      if (streamFrame) cancelAnimationFrame(streamFrame);
+      streamFrame = null;
+      paint();
+      return;
+    }
+    streamPending = paint;
+    if (!streamFrame) {
+      streamFrame = requestAnimationFrame(() => {
+        const fn = streamPending;
+        if (fn) fn();
+      });
+    }
+  }
+
+  function addTools(el) {
+    if (el.querySelector('.msg-tools')) return;
+    const body = el.querySelector('.msg-body');
+    const div = document.createElement('div');
+    div.className = 'msg-tools';
+    div.innerHTML = `
+      <button class="mtool" data-copy title="Copy">${svgIcon('copy')}</button>
+      <button class="mtool" data-regen title="Regenerate">${svgIcon('refresh')}</button>
+      <button class="mtool" data-good title="Good">${svgIcon('thumbUp')}</button>
+      <button class="mtool" data-bad title="Bad">${svgIcon('thumbDown')}</button>`;
+    body.appendChild(div);
+    bindMessageTools();
+  }
+
+  function appendMessage(m, i, typing) {
+    const wrap = $('#msgWrap');
+    const html = messageHtml(m, i == null ? -1 : i);
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const el = div.firstElementChild;
+    if (typing) {
+      el.querySelector('.msg-text').innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
+    }
+    wrap.appendChild(el);
+    bindMessageTools();
+    scrollBottom(false, true);
+    return el;
+  }
+
+  function removeEl(el) {
+    el.style.opacity = '0';
+    setTimeout(() => el.remove(), 200);
+  }
+
+  function showErrorBubble(msg) {
+    const wrap = $('#msgWrap');
+    const div = document.createElement('div');
+    div.className = 'msg';
+    div.innerHTML = `<span class="msg-av ai">${svgIcon('warn')}</span>
+      <div class="msg-body"><div class="err-bubble">${svgIcon('err')}<div>${escapeHtml(msg)}</div></div></div>`;
+    wrap.appendChild(div);
+    scrollBottom();
+  }
+
+  $('#sendBtn').onclick = send;
+
+  /* ----------------------------- regenerate ----------------------------- */
+  async function regenerate() {
+    if (!S.chat || S.streaming) return;
+    S.streaming = true;
+    $('#sendBtn').disabled = true;
+    const t = toast('Regenerating…', 'info', 1500);
+    try {
+      const out = await api('/chat/regenerate', { body: { chatId: S.chat.id } });
+      await openChat(S.chat.id);
+      await loadUsage();
+      toast('Answer regenerated.', 'ok');
+    } catch (e) {
+      toast(e.message, 'err');
+      if (e.code === 'no_tokens') openPaywall();
+    } finally {
+      S.streaming = false;
+      $('#sendBtn').disabled = false;
+    }
+  }
+
+  /* ------------------------------- chat ops ----------------------------- */
+  async function openChat(id) {
+    try {
+      const d = await api('/chats/' + id);
+      renderChat(d.chat);
+      renderChatList();
+      closeSheets();
+      if (window.innerWidth <= 900) $('#side').classList.remove('open');
+    } catch (e) {
+      toast(e.message, 'err');
+    }
+  }
+
+  function newChat() {
+    S.chat = null;
+    renderChat(null);
+    renderChatList();
+    closeSheets();
+    if (window.innerWidth <= 900) $('#side').classList.remove('open');
+    ta.focus();
+  }
+
+  $('#newChat').onclick = newChat;
+  $('#chatSearch').oninput = debounce(renderChatList, 160);
+
+  /* ------------------------------- sheets ------------------------------- */
+  function closeSheets() {
+    $$('.sheet').forEach((s) => s.classList.remove('open'));
+    $('#sideBackdrop').classList.remove('show');
+  }
+  $$('[data-close-sheet]').forEach((b) => (b.onclick = closeSheets));
+  $('#sideBackdrop').onclick = () => {
+    closeSheets();
+    $('#side').classList.remove('open');
+  };
+  $('#hamb').onclick = () => {
+    $('#side').classList.add('open');
+    $('#sideBackdrop').classList.add('show');
+  };
+
+  $('#setBtn').onclick = openSettings;
+  $('#userChip').onclick = openSettings;
+  $('#upgradeBtn').onclick = () => openSettings('billing');
+  $('#histBtn').onclick = openHistory;
+
+  async function openHistory() {
+    await loadChats();
+    $('#historySheet').classList.add('open');
+    $('#sideBackdrop').classList.add('show');
+    renderHistList();
+  }
+  $('#histSearch').oninput = debounce(renderHistList, 160);
+
+  function renderHistList() {
+    const q = ($('#histSearch').value || '').toLowerCase().trim();
+    const list = S.chats.filter((c) => !q || (c.title || '').toLowerCase().includes(q) || (c.preview || '').toLowerCase().includes(q));
+    const el = $('#histList');
+    if (!list.length) {
+      el.innerHTML = `<div class="chat-empty">${q ? 'No chats match that search.' : 'Nothing here yet.'}</div>`;
+      return;
+    }
+    const groups = {};
+    list.forEach((c) => {
+      const d = new Date(c.updatedAt || c.createdAt);
+      const key = timeAgo(c.updatedAt || c.createdAt);
+      const bucket = /just now|m ago|h ago/.test(key) ? 'Today' : /(\d+)d ago/.test(key) && Number(key.match(/(\d+)d/)[1]) < 7 ? 'This week' : 'Earlier';
+      (groups[bucket] = groups[bucket] || []).push(c);
+    });
+    el.innerHTML = ['Today', 'This week', 'Earlier']
+      .filter((g) => groups[g])
+      .map(
+        (g) => `<div class="sec-t">${g}</div>` + groups[g].map((c) => `
+          <div class="chat-item" data-hid="${c.id}">
+            <span class="ci-ico">${svgIcon(c.pinned ? 'pin' : 'chat')}</span>
+            <div class="ci-body">
+              <div class="ci-title">${escapeHtml(c.title || 'New chat')}</div>
+              <div class="ci-sub">${escapeHtml(c.preview || c.modelName || '')}</div>
+            </div>
+            <div class="ci-actions">
+              <button class="ci-btn" data-hdel="${c.id}">${svgIcon('trash')}</button>
+            </div>
+          </div>`).join('')
+      )
+      .join('');
+    el.querySelectorAll('[data-hid]').forEach((d) => {
+      d.onclick = (e) => {
+        if (e.target.closest('[data-hdel]')) return;
+        openChat(d.dataset.hid);
+      };
+    });
+    el.querySelectorAll('[data-hdel]').forEach((b) => {
+      b.onclick = async (e) => {
+        e.stopPropagation();
+        const ok = await confirmBox('Delete this chat?', { ok: 'Delete', danger: true });
+        if (!ok) return;
+        try {
+          await api('/chats/' + b.dataset.hdel, { method: 'DELETE' });
+          await loadChats();
+          renderHistList();
+          if (S.chat && S.chat.id === b.dataset.hdel) newChat();
+        } catch (err) {
+          toast(err.message, 'err');
+        }
+      };
+    });
+  }
+
+  /* ------------------------------ settings ------------------------------ */
+  let setTab = 'account';
+
+  function openSettings(tab) {
+    if (typeof tab === 'string') setTab = tab;
+    $('#settingsSheet').classList.add('open');
+    $('#sideBackdrop').classList.add('show');
+    $$('#setTabs button').forEach((b) => b.classList.toggle('active', b.dataset.t === setTab));
+    renderSettings();
+  }
+
+  $$('#setTabs button').forEach((b) => {
+    b.onclick = () => {
+      setTab = b.dataset.t;
+      $$('#setTabs button').forEach((x) => x.classList.toggle('active', x === b));
+      renderSettings();
+    };
+  });
+
+  function renderSettings() {
+    const body = $('#setBody');
+    if (setTab === 'account') {
+      const u = S.user;
+      const plan = S.plans.find((p) => p.id === u.plan) || { name: u.plan };
+      body.innerHTML = `
+        <div class="plan-hero">
+          <div class="ph-n">Current plan</div>
+          <div class="ph-v">${escapeHtml(plan.name || 'Free')}</div>
+          <div class="ph-s">${num(u.tokens)} tokens left · expires ${u.planExpiresAt ? fmtDate(u.planExpiresAt) : '—'}</div>
+        </div>
+        <div class="sec-t">Profile</div>
+        <div class="field"><label class="label">Display name</label><input class="input" id="stName" value="${escapeAttr(u.name || '')}" /></div>
+        <div class="field"><label class="label">Email</label><input class="input" value="${escapeAttr(u.email || '')}" disabled style="opacity:.65" /></div>
+        <div class="field"><label class="label">New password (optional)</label><input class="input" id="stPass" type="password" placeholder="Leave blank to keep current" /></div>
+        <button class="btn btn-primary btn-block" id="saveProfile">Save changes</button>
+        <div class="sec-t">Sessions</div>
+        <div class="set-row">
+          <div><div class="set-l">Sign out everywhere</div><div class="set-s">Revokes every active device instantly</div></div>
+          <button class="btn btn-danger btn-sm" id="logoutAll">Bounce</button>
+        </div>
+        <div class="set-row">
+          <div><div class="set-l">Sign out</div><div class="set-s">Ends this session only</div></div>
+          <button class="btn btn-ghost btn-sm" id="logoutOne">Sign out</button>
+        </div>`;
+
+      $('#saveProfile').onclick = async (e) => {
+        const btn = e.currentTarget;
+        APP.busy(btn, true);
+        try {
+          const out = await api('/auth/profile', {
+            method: 'PATCH',
+            body: { name: $('#stName').value.trim(), password: $('#stPass').value || undefined }
+          });
+          S.user = out.user;
+          renderUser();
+          toast('Profile updated.', 'ok');
+          APP.busy(btn, false);
+        } catch (err) {
+          toast(err.message, 'err');
+          APP.busy(btn, false);
+        }
+      };
+      $('#logoutAll').onclick = async () => {
+        const ok = await confirmBox('Sign out of every device? You will need to log in again.', { ok: 'Bounce all', danger: true });
+        if (!ok) return;
+        try {
+          await api('/auth/logout-all', { method: 'POST', body: {} });
+          APP.setToken('');
+          location.href = '/login';
+        } catch (e) {
+          toast(e.message, 'err');
+        }
+      };
+      $('#logoutOne').onclick = async () => {
+        try {
+          await api('/auth/logout', { method: 'POST', body: {} });
+        } catch {}
+        APP.setToken('');
+        location.href = '/login';
+      };
+      return;
+    }
+
+    if (setTab === 'billing') return renderBilling(body);
+    if (setTab === 'usage') return renderUsage(body);
+    if (setTab === 'about') {
+      body.innerHTML = `
+        <div class="plan-hero"><div class="ph-n">About</div><div class="ph-v">${escapeHtml((S.settings && S.settings.brandName) || 'FreeModel VIP')}</div>
+        <div class="ph-s">Version 1.0.0 · secure multi-model chat</div></div>
+        <div class="set-row"><div><div class="set-l">Models available</div><div class="set-s">Auto-routing with failover</div></div><span class="badge badge-acc">${S.models.length}</span></div>
+        <div class="set-row"><div><div class="set-l">Your chats</div><div class="set-s">Stored on your account</div></div><span class="badge badge-acc">${S.chats.length}</span></div>
+        <div class="set-row"><div><div class="set-l">Export data</div><div class="set-s">Download every chat as Markdown</div></div><button class="btn btn-ghost btn-sm" id="exportAll">Export</button></div>
+        <div class="set-row"><div><div class="set-l">Clear all chats</div><div class="set-s">Cannot be undone</div></div><button class="btn btn-danger btn-sm" id="clearAll">Delete all</button></div>
+        <p class="hint" style="margin-top:18px">Made for people who want every premium model without five subscriptions.</p>`;
+
+      $('#exportAll').onclick = async () => {
+        let md = '# My FreeModel VIP chats\n\n';
+        for (const c of S.chats) {
+          try {
+            const d = await api('/chats/' + c.id);
+            md += `## ${d.chat.title}\n\n`;
+            (d.chat.messages || []).forEach((m) => {
+              md += `**${m.role === 'user' ? 'You' : 'Assistant'}:** ${m.content}\n\n`;
+            });
+          } catch {}
+        }
+        const blob = new Blob([md], { type: 'text/markdown' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'freemodel-chats.md';
+        a.click();
+        toast('Exported.', 'ok');
+      };
+      $('#clearAll').onclick = async () => {
+        const ok = await confirmBox('Delete absolutely every chat? This cannot be undone.', { ok: 'Delete all', danger: true });
+        if (!ok) return;
+        try {
+          await api('/chats/clear-all', { body: {} });
+          S.chats = [];
+          renderChatList();
+          newChat();
+          toast('All chats deleted.', 'ok');
+        } catch (e) {
+          toast(e.message, 'err');
+        }
+      };
+    }
+  }
+
+  /* ------------------------------- usage -------------------------------- */
+  function renderUsage(body) {
+    const tokens = Number(S.user.tokens || 0);
+    const used = Number(S.user.tokensUsed || 0);
+    const total = tokens + used || 1;
+    const pct = Math.min(100, (used / total) * 100);
+    const dpct = S.dailyLimit ? Math.min(100, (S.dailyUsed / S.dailyLimit) * 100) : 0;
+    body.innerHTML = `
+      <div class="plan-hero">
+        <div class="ph-n">Token balance</div>
+        <div class="ph-v">${num(tokens)} left</div>
+        <div class="ph-s">${num(used)} used of ${num(total)} lifetime</div>
+        <div class="usage-bar"><i style="width:${pct}%"></i></div>
+      </div>
+      <div class="sec-t">Today</div>
+      <div class="set-row">
+        <div><div class="set-l">Messages sent</div><div class="set-s">Limit resets every 24 hours</div></div>
+        <span class="badge ${dpct > 85 ? 'badge-err' : 'badge-acc'}">${S.dailyUsed} / ${S.dailyLimit || '∞'}</span>
+      </div>
+      <div class="usage-bar"><i style="width:${dpct}%;background:${dpct > 85 ? '#fb7185' : 'var(--grad)'}"></i></div>
+      <div class="sec-t">Cost per message</div>
+      <div class="set-row"><div><div class="set-l">Base cost</div><div class="set-s">Charged per message</div></div><span class="mono">${(S.settings && S.settings.tokensPerMessage) || 15} tokens</span></div>
+      <div class="set-row"><div><div class="set-l">Length surcharge</div><div class="set-s">Per 1,000 characters</div></div><span class="mono">${(S.settings && S.settings.tokensPer1kChars) || 0} tokens</span></div>
+      <div class="set-row"><div><div class="set-l">Failed requests</div><div class="set-s">Always refunded in full</div></div><span class="badge badge-ok">Refunded</span></div>
+      <button class="btn btn-primary btn-block" style="margin-top:18px" onclick="document.querySelector('#setTabs button[data-t=billing]').click()">Top up tokens</button>`;
+  }
+
+  /* ------------------------------- billing ------------------------------ */
+  let payMode = 'manual';
+  let selPlan = null;
+
+  async function renderBilling(body) {
+    body.innerHTML = `<div class="skel" style="height:150px;margin-bottom:12px"></div><div class="skel" style="height:200px"></div>`;
+    let data, mine;
+    try {
+      data = await api('/plans');
+      mine = await api('/payments');
+    } catch (e) {
+      body.innerHTML = `<p class="hint">${escapeHtml(e.message)}</p>`;
+      return;
+    }
+    payMode = data.payment.mode || 'manual';
+    const cur = S.user.plan;
+
+    body.innerHTML = `
+      <div class="plan-hero">
+        <div class="ph-n">Tokens</div>
+        <div class="ph-v">${num(S.user.tokens)} available</div>
+        <div class="ph-s">Upgrade for more tokens and a higher daily limit</div>
+      </div>
+      <div class="sec-t">Choose a plan</div>
+      <div class="plan-list">
+        ${data.plans
+          .map(
+            (p) => `<div class="plan-item ${p.id === cur ? 'cur' : ''}">
+              <div class="row-between">
+                <div>
+                  <div class="pi-n">${escapeHtml(p.name)} ${p.popular ? '<span class="badge badge-gold" style="margin-left:4px">Popular</span>' : ''}</div>
+                  <div class="pi-p">${p.price > 0 ? money(p.price) : 'Free'}</div>
+                  <div class="pi-t">${num(p.tokens)} tokens · ${p.daily} msgs/day</div>
+                </div>
+                ${p.id === cur ? '<span class="badge badge-ok">Current</span>' : `<button class="btn btn-primary btn-sm" data-buy="${p.id}">Buy</button>`}
+              </div>
+              <ul class="pi-perks">${(p.perks || []).map((x) => `<li>${svgIcon('check')}<span>${escapeHtml(x)}</span></li>`).join('')}</ul>
+            </div>`
+          )
+          .join('')}
+      </div>
+      <div class="sec-t">Payment history</div>
+      <div class="pay-hist">
+        ${mine.payments.length
+          ? mine.payments
+              .map(
+                (p) => `<div class="pay-row">
+                  <span style="flex:1"><span class="pr-n">${escapeHtml(p.planName)}</span> · ${money(p.amount)}
+                  <div class="pr-d">${fmtDate(p.createdAt)} · ${escapeHtml(p.mode)}${p.utr ? ' · ' + escapeHtml(p.utr) : ''}</div></span>
+                  <span class="badge ${p.status === 'success' ? 'badge-ok' : p.status === 'pending' ? 'badge-warn' : 'badge-err'}">${escapeHtml(p.status)}</span>
+                </div>`
+              )
+              .join('')
+          : '<p class="hint">No payments yet.</p>'}
+      </div>`;
+
+    body.querySelectorAll('[data-buy]').forEach((b) => {
+      b.onclick = () => {
+        selPlan = data.plans.find((p) => p.id === b.dataset.buy);
+        openCheckout(data, selPlan);
+      };
+    });
+  }
+
+  /* ------------------------------ checkout ------------------------------ */
+  async function openCheckout(data, plan) {
+    const pay = data.payment;
+    const mode = pay.mode || 'manual';
+
+    if (mode === 'razorpay' && pay.razorpayKeyId) return razorpayFlow(plan, pay);
+    if (mode === 'cashfree') return cashfreeFlow(plan);
+
+    APP.modal({
+      title: `Pay ${money(plan.price)} for ${escapeHtml(plan.name)}`,
+      wide: true,
+      body: `
+        <div class="upi-box">
+          <div class="tiny dim" style="letter-spacing:.1em;text-transform:uppercase;font-weight:800">Pay to UPI ID</div>
+          <div class="upi-id" id="upiId">${escapeHtml(pay.upiId || 'Not configured')}</div>
+          ${pay.upiName ? `<div class="tiny dim">${escapeHtml(pay.upiName)}</div>` : ''}
+          ${pay.qrImage ? `<div class="upi-qr"><img src="${escapeAttr(pay.qrImage)}" alt="Payment QR" /></div>` : ''}
+          <button class="btn btn-ghost btn-sm" id="copyUpi" style="margin-top:8px">${svgIcon('copy')} Copy UPI ID</button>
+        </div>
+        <p class="hint" style="margin-bottom:16px">${escapeHtml(pay.instructions || '')}</p>
+        <div class="field">
+          <label class="label">UTR / transaction reference *</label>
+          <input class="input" id="utrInput" placeholder="e.g. 436812345678" />
+        </div>
+        <div class="field">
+          <label class="label">Screenshot (optional)</label>
+          <input class="input" id="shotInput" type="file" accept="image/*" />
+          <div class="hint">PNG or JPG, under 2MB. Helps the admin verify faster.</div>
+        </div>
+        <div class="field">
+          <label class="label">Note for the admin (optional)</label>
+          <input class="input" id="noteInput" placeholder="Anything we should know?" />
+        </div>`,
+      footer: `<button class="btn btn-ghost" data-cancel>Cancel</button>
+               <button class="btn btn-primary" data-submit>I have paid — submit</button>`,
+      onOpen(el, close) {
+        el.querySelector('[data-cancel]').onclick = close;
+        el.querySelector('#copyUpi').onclick = async () => {
+          await copyText(pay.upiId || '');
+          toast('UPI ID copied.', 'ok', 1600);
+        };
+        el.querySelector('[data-submit]').onclick = async () => {
+          const btn = el.querySelector('[data-submit]');
+          const utr = el.querySelector('#utrInput').value.trim();
+          const note = el.querySelector('#noteInput').value.trim();
+          const file = el.querySelector('#shotInput').files[0];
+          if (utr.length < 4) return toast('Enter the UTR / reference number.', 'err');
+
+          let screenshot = '';
+          if (file) {
+            if (file.size > 2 * 1024 * 1024) return toast('Screenshot must be under 2MB.', 'err');
+            screenshot = await new Promise((res) => {
+              const r = new FileReader();
+              r.onload = () => res(r.result);
+              r.readAsDataURL(file);
+            });
+          }
+          APP.busy(btn, true);
+          try {
+            await api('/payments/manual', { body: { planId: plan.id, utr, note, screenshot } });
+            close();
+            toast('Payment submitted! Admin will verify it shortly.', 'ok', 5000);
+            renderSettings();
+          } catch (e) {
+            toast(e.message, 'err');
+            APP.busy(btn, false);
+          }
+        };
+      }
+    });
+  }
+
+  /* ------------------------------- razorpay ----------------------------- */
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      if (document.querySelector(`script[src="${src}"]`)) return resolve();
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  async function razorpayFlow(plan, pay) {
+    try {
+      await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+      const order = await api('/payments/razorpay/order', { body: { planId: plan.id } });
+      const rzp = new window.Razorpay({
+        key: order.keyId,
+        amount: order.amount,
+        currency: order.currency,
+        name: (S.settings && S.settings.brandName) || 'FreeModel VIP',
+        description: plan.name + ' plan',
+        order_id: order.order.id,
+        prefill: { name: S.user.name, email: S.user.email },
+        theme: { color: '#6366f1' },
+        handler: async (resp) => {
+          try {
+            await api('/payments/razorpay/verify', { body: resp });
+            toast('Payment successful — plan activated!', 'ok', 5000);
+            await refreshUser();
+            renderSettings();
+          } catch (e) {
+            toast(e.message, 'err');
+          }
+        },
+        modal: {
+          ondismiss: () => toast('Payment cancelled.', 'info')
+        }
+      });
+      rzp.on('payment.failed', (r) => toast(r.error?.description || 'Payment failed.', 'err'));
+      rzp.open();
+    } catch (e) {
+      toast(e.message || 'Could not start Razorpay.', 'err');
+    }
+  }
+
+  async function cashfreeFlow(plan) {
+    try {
+      const order = await api('/payments/cashfree/order', { body: { planId: plan.id } });
+      await loadScript('https://sdk.cashfree.com/js/v3/cashfree.js');
+      const cashfree = window.Cashfree({ mode: 'sandbox' });
+      cashfree.checkout({
+        paymentSessionId: order.sessionId,
+        redirectTarget: '_modal'
+      });
+      toast('Complete the Cashfree checkout. Your plan activates automatically.', 'info', 6000);
+    } catch (e) {
+      toast(e.message || 'Could not start Cashfree.', 'err');
+    }
+  }
+
+  async function refreshUser() {
+    try {
+      const me = await api('/auth/me');
+      S.user = me.user;
+      renderUser();
+      await loadUsage();
+    } catch {}
+  }
+
+  function openPaywall() {
+    const m = APP.modal({
+      title: 'You are out of tokens',
+      body: `<p class="muted" style="margin-bottom:14px">Your balance is too low for this message. Top up to keep chatting — every plan unlocks the full model line-up.</p>
+             <div class="plan-hero"><div class="ph-n">Balance</div><div class="ph-v">${num(S.user.tokens)} tokens</div>
+             <div class="ph-s">Daily limit: ${S.dailyUsed}/${S.dailyLimit || '∞'} messages</div></div>`,
+      footer: `<button class="btn btn-ghost" data-x3>Later</button><button class="btn btn-gold" data-go>View plans</button>`,
+      onOpen(el, close) {
+        el.querySelector('[data-x3]').onclick = close;
+        el.querySelector('[data-go]').onclick = () => {
+          close();
+          openSettings('billing');
+        };
+      }
+    });
+  }
+
+  /* -------------------------------- keys -------------------------------- */
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      newChat();
+    }
+    if (e.key === '/' && document.activeElement !== ta) {
+      e.preventDefault();
+      ta.focus();
+    }
+  });
+
+  /* ------------------------------ unauthorised -------------------------- */
+  window.addEventListener('fmv:unauthorised', () => {
+    APP.setToken('');
+    location.href = '/login';
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>

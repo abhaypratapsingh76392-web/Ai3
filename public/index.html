@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#05070c" />
+<meta name="description" content="FreeModel VIP — one subscription, every premium AI model. Claude, GPT-4o, Gemini, DeepSeek and more in a single beautiful chat." />
+<title>FreeModel VIP — Every premium AI model. One subscription.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/theme.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='.5' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='url(%23g)'/%3E%3Cpath d='M16 6l2.9 7.1L26 16l-7.1 2.9L16 26l-2.9-7.1L6 16l7.1-2.9L16 6z' fill='%23fff'/%3E%3C/svg%3E" />
+<style>
+/* ======================= LANDING ONLY ======================= */
+.nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(18px);background:rgba(5,7,12,.62);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+.nav.scrolled{border-bottom-color:var(--line);background:rgba(5,7,12,.88)}
+.nav-in{display:flex;align-items:center;gap:14px;height:70px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:-.02em;font-size:16.5px}
+.brand-mark{width:36px;height:36px;border-radius:11px;background:var(--grad);display:grid;place-items:center;box-shadow:0 10px 26px -10px rgba(99,102,241,.95);position:relative;overflow:hidden}
+.brand-mark::after{content:"";position:absolute;inset:0;background:linear-gradient(140deg,rgba(255,255,255,.4),transparent 55%);opacity:.5}
+.brand-mark svg{width:20px;height:20px;color:#fff;position:relative;z-index:1}
+.nav-links{display:flex;gap:4px;margin-left:14px}
+.nav-links a{padding:9px 13px;border-radius:9px;font-size:14px;color:var(--muted);font-weight:550;transition:.16s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-cta{margin-left:auto;display:flex;gap:9px;align-items:center}
+.burger{display:none;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#fff;width:40px;height:40px;border-radius:11px;cursor:pointer}
+.mobile-menu{display:none;flex-direction:column;gap:4px;padding:12px 20px 18px;border-top:1px solid var(--line)}
+.mobile-menu a{padding:12px;border-radius:10px;color:var(--muted);font-size:14.5px}
+.mobile-menu a:hover{background:rgba(255,255,255,.06);color:#fff}
+.mobile-menu.open{display:flex}
+
+/* hero */
+.hero{position:relative;padding:76px 0 40px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:52px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;padding:7px 15px 7px 9px;border-radius:99px;border:1px solid rgba(99,102,241,.36);background:rgba(99,102,241,.13);font-size:12.5px;font-weight:650;color:#c9d3ff;margin-bottom:22px}
+.hero-badge .dot{background:var(--ok)}
+.hero h1{font-size:clamp(38px,5.4vw,66px);letter-spacing:-.045em;font-weight:900;line-height:1.02}
+.hero p.lead{margin-top:20px;font-size:clamp(15px,1.55vw,18.5px);color:var(--muted);max-width:560px;line-height:1.62}
+.hero-cta{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.hero-proof{display:flex;align-items:center;gap:18px;margin-top:30px;flex-wrap:wrap;color:var(--dim);font-size:12.8px}
+.hero-proof span{display:flex;align-items:center;gap:7px}
+.hero-proof svg{width:15px;height:15px;color:var(--ok)}
+.avatars{display:flex}
+.avatars i{width:30px;height:30px;border-radius:50%;border:2px solid #06090f;margin-left:-9px;display:grid;place-items:center;font-size:11px;font-weight:800;font-style:normal;color:#fff}
+.avatars i:first-child{margin-left:0}
+
+/* hero visual */
+.hero-visual{position:relative}
+.glow-orb{position:absolute;width:420px;height:420px;border-radius:50%;filter:blur(90px);opacity:.5;pointer-events:none}
+.orb-a{background:#6366f1;top:-110px;right:-40px;animation:float 13s ease-in-out infinite}
+.orb-b{background:#22d3ee;bottom:-120px;left:-70px;opacity:.32;animation:float 17s ease-in-out infinite reverse}
+@keyframes float{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-22px,26px,0)}}
+.demo{
+  position:relative;border-radius:24px;border:1px solid rgba(140,170,220,.22);
+  background:linear-gradient(180deg,rgba(14,21,36,.97),rgba(7,11,19,.99));
+  box-shadow:0 44px 110px -40px rgba(0,0,0,1),inset 0 1px 0 rgba(255,255,255,.07);
+  overflow:hidden;transform:perspective(1400px) rotateY(-6deg) rotateX(3deg);
+  transition:transform .7s cubic-bezier(.2,.8,.3,1);
+}
+.demo:hover{transform:perspective(1400px) rotateY(0) rotateX(0)}
+.demo-top{display:flex;align-items:center;gap:8px;padding:12px 15px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.025)}
+.tl{display:flex;gap:6px}
+.tl i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-model{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);font-weight:650;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.05);border:1px solid var(--line)}
+.demo-body{padding:18px;display:flex;flex-direction:column;gap:14px;min-height:352px}
+.bub{max-width:88%;padding:11px 14px;border-radius:15px;font-size:13.4px;line-height:1.62}
+.bub.user{align-self:flex-end;background:var(--grad);color:#fff;border-bottom-right-radius:5px;box-shadow:0 10px 26px -14px rgba(99,102,241,.9)}
+.bub.ai{align-self:flex-start;background:rgba(255,255,255,.052);border:1px solid var(--line);border-bottom-left-radius:5px;color:#dfe8fa}
+.bub.ai b{color:#fff}
+.bub .cursor{display:inline-block;width:7px;height:14px;background:var(--acc-2);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(2) infinite;border-radius:2px}
+@keyframes blink{50%{opacity:0}}
+.demo-models{display:flex;gap:7px;padding:0 18px 18px;flex-wrap:wrap}
+.chip-mini{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:99px;background:rgba(255,255,255,.045);border:1px solid var(--line);font-size:11.5px;color:var(--muted);font-weight:600;transition:.2s;cursor:default}
+.chip-mini.active{background:rgba(99,102,241,.2);border-color:rgba(99,102,241,.55);color:#dfe4ff}
+.chip-mini .m-ico svg{width:13px;height:13px}
+
+/* floating stat cards */
+.float-card{position:absolute;border-radius:15px;padding:11px 14px;background:rgba(12,19,33,.95);border:1px solid var(--line-2);box-shadow:var(--shadow);backdrop-filter:blur(14px);display:flex;align-items:center;gap:10px;font-size:12px;z-index:3}
+.float-card .fc-ico{width:31px;height:31px;border-radius:9px;display:grid;place-items:center;background:rgba(52,211,153,.16);color:#6ee7b7}
+.float-card .fc-ico svg{width:16px;height:16px}
+.fc-1{top:26px;left:-30px;animation:bob 6s ease-in-out infinite}
+.fc-2{bottom:44px;right:-26px;animation:bob 7.5s ease-in-out infinite .8s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+
+/* marquee */
+.marquee-wrap{margin-top:56px;padding:20px 0;border-block:1px solid var(--line);overflow:hidden;position:relative;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marquee{display:flex;gap:14px;width:max-content;animation:scroll 34s linear infinite}
+.marquee-wrap:hover .marquee{animation-play-state:paused}
+@keyframes scroll{to{transform:translateX(-50%)}}
+.mq-item{display:flex;align-items:center;gap:9px;padding:9px 16px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line);font-size:13px;font-weight:650;color:var(--muted);white-space:nowrap}
+.mq-item .m-ico{display:grid;place-items:center}
+.mq-item .m-ico svg{width:17px;height:17px}
+
+/* sections */
+.section{padding:88px 0}
+.sec-head{max-width:660px;margin:0 auto 46px;text-align:center}
+.sec-eyebrow{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--acc-2);margin-bottom:14px}
+.sec-head h2{font-size:clamp(28px,3.7vw,44px);letter-spacing:-.038em}
+.sec-head p{margin-top:16px;color:var(--muted);font-size:16px}
+
+/* models grid */
+.models-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px}
+.model-card{
+  position:relative;padding:20px;border-radius:18px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(15,23,39,.8),rgba(8,13,23,.85));
+  transition:transform .28s cubic-bezier(.2,.8,.3,1),border-color .28s,box-shadow .28s;
+  overflow:hidden;
+}
+.model-card::before{
+  content:"";position:absolute;inset:0;opacity:0;transition:opacity .3s;
+  background:radial-gradient(320px 160px at var(--mx,50%) var(--my,0%),var(--mc,rgba(99,102,241,.2)),transparent 72%);
+  pointer-events:none;
+}
+.model-card:hover{transform:translateY(-5px);border-color:rgba(140,170,220,.36);box-shadow:0 28px 60px -32px rgba(0,0,0,.95)}
+.model-card:hover::before{opacity:1}
+.mc-top{display:flex;align-items:center;gap:11px;margin-bottom:13px;position:relative}
+.m-ico{display:inline-grid;place-items:center}
+.mc-logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto;border:1px solid var(--line-2);position:relative}
+.mc-logo svg{width:21px;height:21px}
+.mc-name{font-weight:750;font-size:14.8px;letter-spacing:-.01em}
+.mc-vendor{font-size:11.5px;color:var(--dim);font-weight:600}
+.mc-desc{font-size:13px;color:var(--muted);line-height:1.6;position:relative;margin-bottom:14px;min-height:42px}
+.mc-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative}
+.tier{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;border-radius:6px}
+
+/* bento features */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.bento .b{padding:24px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(165deg,rgba(15,23,39,.78),rgba(8,13,23,.86));position:relative;overflow:hidden;transition:.3s}
+.bento .b:hover{border-color:rgba(140,170,220,.34);transform:translateY(-3px)}
+.bento .b::after{content:"";position:absolute;width:200px;height:200px;border-radius:50%;background:var(--acc);opacity:.09;filter:blur(48px);top:-80px;right:-60px;pointer-events:none}
+.b-3{grid-column:span 3}.b-2{grid-column:span 2}.b-4{grid-column:span 4}.b-6{grid-column:span 6}
+.b-ico{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:rgba(99,102,241,.16);border:1px solid rgba(99,102,241,.32);color:#a5b4fc;margin-bottom:16px}
+.b-ico svg{width:21px;height:21px}
+.b h3{font-size:17px;letter-spacing:-.02em;margin-bottom:8px}
+.b p{font-size:13.6px;color:var(--muted);line-height:1.65}
+.b-visual{margin-top:16px;border-radius:12px;border:1px solid var(--line);background:rgba(4,8,15,.6);padding:12px;font-family:var(--mono);font-size:11.4px;color:#8ea8cc;line-height:1.85;overflow:hidden}
+.b-visual .k{color:#c4b5fd}
+.b-visual .s{color:#6ee7b7}
+.pool-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px dashed rgba(120,150,200,.14);font-size:11.8px}
+.pool-row:last-child{border:0}
+.bar{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--grad);border-radius:99px}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;position:relative}
+.step{padding:26px 22px;border-radius:20px;border:1px solid var(--line);background:rgba(10,16,28,.6);position:relative}
+.step-n{width:36px;height:36px;border-radius:11px;background:var(--grad);display:grid;place-items:center;font-weight:850;font-size:15px;color:#fff;margin-bottom:15px;box-shadow:0 10px 26px -12px rgba(99,102,241,.9)}
+.step h3{font-size:16.5px;margin-bottom:7px}
+.step p{font-size:13.4px;color:var(--muted);line-height:1.62}
+
+/* pricing */
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:18px;align-items:stretch}
+.price-card{display:flex;flex-direction:column;padding:26px 22px;border-radius:22px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(14,21,36,.86),rgba(8,13,23,.9));position:relative;transition:.3s}
+.price-card:hover{transform:translateY(-5px);border-color:rgba(140,170,220,.36)}
+.price-card.popular{border-color:rgba(99,102,241,.62);box-shadow:0 0 0 1px rgba(99,102,241,.2),0 34px 80px -40px rgba(99,102,241,.85);background:linear-gradient(180deg,rgba(24,24,58,.9),rgba(10,13,28,.94))}
+.pop-tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:5px 14px;border-radius:99px;background:var(--grad);font-size:10.5px;font-weight:850;letter-spacing:.09em;text-transform:uppercase;color:#fff;box-shadow:0 10px 24px -10px rgba(99,102,241,.95)}
+.pc-name{font-size:12.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--acc-2);margin-bottom:12px}
+.pc-price{display:flex;align-items:baseline;gap:5px}
+.pc-price .amt{font-size:38px;font-weight:900;letter-spacing:-.04em}
+.pc-price .per{font-size:12.5px;color:var(--dim);font-weight:600}
+.pc-tokens{margin-top:6px;font-size:12.8px;color:var(--gold);font-weight:700}
+.pc-perks{list-style:none;padding:0;margin:18px 0 22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.pc-perks li{display:flex;gap:9px;font-size:13.2px;color:var(--muted);line-height:1.5}
+.pc-perks svg{width:16px;height:16px;flex:0 0 auto;color:var(--ok);margin-top:2px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stat{padding:26px 20px;border-radius:18px;border:1px solid var(--line);background:rgba(10,16,28,.62);text-align:center}
+.stat .v{font-size:clamp(26px,3vw,36px);font-weight:900;letter-spacing:-.04em}
+.stat .l{font-size:12.4px;color:var(--dim);margin-top:5px;font-weight:600}
+
+/* faq */
+.faq{max-width:800px;margin-inline:auto;display:flex;flex-direction:column;gap:11px}
+.faq-item{border:1px solid var(--line);border-radius:15px;background:rgba(10,16,28,.6);overflow:hidden;transition:.24s}
+.faq-item[open]{border-color:rgba(99,102,241,.44);background:rgba(16,22,44,.72)}
+.faq-item summary{padding:17px 20px;font-size:14.6px;font-weight:650;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary svg{width:17px;height:17px;color:var(--dim);transition:transform .25s;flex:0 0 auto}
+.faq-item[open] summary svg{transform:rotate(180deg);color:var(--acc-2)}
+.faq-item p{padding:0 20px 18px;font-size:13.6px;color:var(--muted);line-height:1.7}
+
+/* final cta */
+.final-cta{position:relative;padding:64px 40px;border-radius:28px;text-align:center;overflow:hidden;
+  background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(139,92,246,.14),rgba(34,211,238,.12));
+  border:1px solid rgba(120,150,200,.3)}
+.final-cta::before{content:"";position:absolute;inset:-50%;background:conic-gradient(from 0deg,transparent,rgba(99,102,241,.28),transparent 40%);animation:spin 16s linear infinite;pointer-events:none}
+.final-cta > *{position:relative}
+.final-cta h2{font-size:clamp(27px,3.6vw,42px);letter-spacing:-.04em}
+.final-cta p{margin:14px auto 28px;max-width:520px;color:var(--muted);font-size:15.5px}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:48px 0 32px;margin-top:60px}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:36px}
+.foot-col h4{font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;font-weight:800}
+.foot-col a{display:block;font-size:13.4px;color:var(--muted);padding:5px 0;transition:.15s}
+.foot-col a:hover{color:#fff;transform:translateX(2px)}
+.foot-bottom{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-top:36px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim);flex-wrap:wrap}
+
+@media(max-width:1000px){
+  .hero-grid{grid-template-columns:1fr;gap:44px}
+  .hero{padding-top:48px}
+  .demo{transform:none}
+  .hero-visual{order:2}
+  .fc-1{left:-6px;top:-14px}
+  .fc-2{right:-4px;bottom:-14px}
+  .b-3,.b-2,.b-4{grid-column:span 6}
+  .bento{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .burger{display:grid;place-items:center}
+  .nav-cta .btn-ghost{display:none}
+}
+@media(max-width:640px){
+  .wrap{width:calc(100% - 30px)}
+  .section{padding:60px 0}
+  .final-cta{padding:44px 22px}
+  .hero-cta .btn{width:100%}
+  .float-card{display:none}
+  .foot-grid{grid-template-columns:1fr}
+  .bub{max-width:96%}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================== NAV ============================== -->
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/">
+      <span class="brand-mark" id="brandMark"></span>
+      <span id="brandName">FreeModel VIP</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#models">Models</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="/login" class="btn btn-ghost btn-sm">Sign in</a>
+      <a href="/login?mode=signup" class="btn btn-primary btn-sm">Get started free</a>
+      <button class="burger" id="burger" aria-label="Menu"></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#models">Models</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="/login?mode=signup" style="color:#a5b4fc;font-weight:700">Get started free →</a>
+  </div>
+</header>
+
+<!-- ============================== HERO ============================== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-badge fade-up"><span class="dot"></span> All premium models · one tiny subscription</div>
+      <h1 class="fade-up">Every premium AI.<br /><span class="grad-text">One single chat.</span></h1>
+      <p class="lead fade-up">
+        Claude, GPT-4o, Gemini, DeepSeek, Llama, Grok and more — switch models mid-conversation,
+        upload files, and keep every chat in your history. No juggling multiple subscriptions.
+      </p>
+      <div class="hero-cta fade-up">
+        <a href="/login?mode=signup" class="btn btn-primary btn-lg" id="ctaFree">
+          Get started free
+          <span class="cta-arrow"></span>
+        </a>
+        <a href="#models" class="btn btn-ghost btn-lg">Browse models</a>
+      </div>
+      <div class="hero-proof fade-up">
+        <span class="avatars">
+          <i style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">A</i>
+          <i style="background:linear-gradient(135deg,#22d3ee,#0ea5e9)">R</i>
+          <i style="background:linear-gradient(135deg,#f5c76a,#e0a94a)">S</i>
+          <i style="background:linear-gradient(135deg,#34d399,#10b981)">K</i>
+        </span>
+        <span><span id="proofTokens">5,000</span> free tokens on signup</span>
+        <span>No card required</span>
+      </div>
+    </div>
+
+    <div class="hero-visual fade-up">
+      <div class="glow-orb orb-a"></div>
+      <div class="glow-orb orb-b"></div>
+
+      <div class="float-card fc-1">
+        <span class="fc-ico" id="fcIco1"></span>
+        <div>
+          <div style="font-weight:750">8 models live</div>
+          <div class="dim tiny">auto-failover pool</div>
+        </div>
+      </div>
+
+      <div class="demo" id="demo">
+        <div class="demo-top">
+          <div class="tl"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+          <div class="demo-model" id="demoModel">Claude Sonnet</div>
+        </div>
+        <div class="demo-body" id="demoBody"></div>
+        <div class="demo-models" id="demoModels"></div>
+      </div>
+
+      <div class="float-card fc-2">
+        <span class="fc-ico" id="fcIco2"></span>
+        <div>
+          <div style="font-weight:750">One API pool</div>
+          <div class="dim tiny">rotates before you notice</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="marquee-wrap">
+    <div class="marquee" id="marquee"></div>
+  </div>
+</section>
+
+<!-- ============================== MODELS ============================== -->
+<section class="section" id="models">
+  <div class="wrap">
+    <div class="sec-head fade-up">
+      <div class="sec-eyebrow">The full line-up</div>
+      <h2>All the models people<br /><span class="grad-text">actually pay for</span></h2>
+      <p>Pick a model before you type, or let auto-routing choose the best one. Every model keeps full context of your files.</p>
+    </div>
+    <div class="models-grid" id="modelsGrid"></div>
+  </div>
+</section>
+
+<!-- ============================== FEATURES ============================== -->
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="sec-head fade-up">
+      <div class="sec-eyebrow">Built different</div>
+      <h2>Premium features,<br /><span class="grad-text">seriously fast</span></h2>
+      <p>Everything you need in one place — streaming answers, file brains, token metering and a real admin console.</p>
+    </div>
+
+    <div class="bento">
+      <div class="b b-3 fade-up">
+        <div class="b-ico" id="ico-bolt"></div>
+        <h3>Streaming answers, zero wait</h3>
+        <p>Server-sent events push every token the instant it is generated. If a provider dies mid-request, the router silently retries on the next healthy key.</p>
+        <div class="b-visual">
+          <div><span class="k">POST</span> /api/chat <span class="s">→ 200 SSE</span></div>
+          <div>event: meta → provider: Primary Engine</div>
+          <div>data: {"delta":"Here"} data: {"delta":" is"} …</div>
+          <div style="color:#6ee7b7">event: done ✓ 1,204 chars</div>
+        </div>
+      </div>
+
+      <div class="b b-3 fade-up">
+        <div class="b-ico" id="ico-layers"></div>
+        <h3>Invisible key rotation</h3>
+        <p>Admin can attach unlimited upstream APIs. Each key has a request budget — when it runs out the router parks it and moves to the next one. Users never see a thing.</p>
+        <div class="b-visual" id="poolViz"></div>
+      </div>
+
+      <div class="b b-2 fade-up">
+        <div class="b-ico" id="ico-file"></div>
+        <h3>Files & images</h3>
+        <p>Drop PDFs, code, CSV or screenshots. Text is extracted in the browser session and images are passed to vision models.</p>
+      </div>
+
+      <div class="b b-2 fade-up">
+        <div class="b-ico" id="ico-history"></div>
+        <h3>History that stays</h3>
+        <p>Every chat is saved and searchable, with pinning, renaming and one-click Markdown export.</p>
+      </div>
+
+      <div class="b b-2 fade-up">
+        <div class="b-ico" id="ico-shield"></div>
+        <h3>Hardened by default</h3>
+        <p>scrypt passwords, signed sessions, strict CSP, rate limits, input sanitising and instant "bounce" logout.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== STEPS ============================== -->
+<section class="section" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head fade-up">
+      <div class="sec-eyebrow">60 seconds</div>
+      <h2>Start chatting in <span class="grad-text">three steps</span></h2>
+    </div>
+    <div class="steps">
+      <div class="step fade-up">
+        <div class="step-n">1</div>
+        <h3>Create your account</h3>
+        <p>Continue with Google or an email address. Fresh accounts get free starter tokens instantly.</p>
+      </div>
+      <div class="step fade-up">
+        <div class="step-n">2</div>
+        <h3>Pick any model</h3>
+        <p>Open the model switcher above the composer and choose Claude, GPT, Gemini, DeepSeek and more.</p>
+      </div>
+      <div class="step fade-up">
+        <div class="step-n">3</div>
+        <h3>Top up when you need</h3>
+        <p>Upgrade in one tap from Settings → Billing using UPI, Razorpay or Cashfree. Tokens land instantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== PRICING ============================== -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="sec-head fade-up">
+      <div class="sec-eyebrow">Simple pricing</div>
+      <h2>Pay once. <span class="grad-text">Use every model.</span></h2>
+      <p>Every plan unlocks the complete model line-up. Bigger plans simply give you more tokens and a higher daily limit.</p>
+    </div>
+    <div class="price-grid" id="priceGrid"></div>
+    <p class="center dim small" style="margin-top:26px" id="payNote"></p>
+  </div>
+</section>
+
+<!-- ============================== STATS ============================== -->
+<section class="section" style="padding-top:20px">
+  <div class="wrap">
+    <div class="stats" id="stats"></div>
+  </div>
+</section>
+
+<!-- ============================== FAQ ============================== -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="sec-head fade-up">
+      <div class="sec-eyebrow">Questions</div>
+      <h2>Everything you might ask</h2>
+    </div>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+<!-- ============================== CTA ============================== -->
+<section class="wrap" style="padding-bottom:20px">
+  <div class="final-cta fade-up">
+    <h2>Your next favourite AI is <span class="grad-text">one click away</span></h2>
+    <p>Join thousands of people who replaced five subscriptions with one. Free starter tokens included.</p>
+    <a href="/login?mode=signup" class="btn btn-gold btn-lg" id="ctaBottom">Start free — no card needed</a>
+  </div>
+</section>
+
+<!-- ============================== FOOTER ============================== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="brand" style="margin-bottom:14px">
+          <span class="brand-mark" id="brandMark2"></span>
+          <span>FreeModel VIP</span>
+        </div>
+        <p class="small muted" style="max-width:280px">
+          One subscription for every premium AI model. Built for speed, privacy and power.
+        </p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="#models">Models</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="/login">Sign in</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="#faq">Help centre</a>
+        <a href="#pricing">Billing</a>
+        <a href="/app">Dashboard</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#faq">About</a>
+        <a href="#faq">Privacy</a>
+        <a href="#faq">Terms</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> FreeModel VIP. All rights reserved.</span>
+      <span class="row" style="gap:16px"><span id="payBadge"></span><span>Made with ♥ for AI lovers</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/icons.js"></script>
+<script src="/assets/js/core.js"></script>
+<script>
+(function () {
+  'use strict';
+  const { api, escapeHtml, money, num, observeReveals, toast } = APP;
+
+  /* ------------------------------ brand bits ------------------------------ */
+  document.getElementById('brandMark').innerHTML = svgIcon('spark');
+  document.getElementById('brandMark2').innerHTML = svgIcon('spark');
+  document.getElementById('burger').innerHTML = svgIcon('menu');
+  document.getElementById('ctaFree').querySelector('.cta-arrow').outerHTML = svgIcon('arrowRight');
+  document.getElementById('fcIco1').innerHTML = svgIcon('bolt');
+  document.getElementById('fcIco2').innerHTML = svgIcon('plug');
+  document.getElementById('ico-bolt').innerHTML = svgIcon('bolt');
+  document.getElementById('ico-layers').innerHTML = svgIcon('layers');
+  document.getElementById('ico-file').innerHTML = svgIcon('file');
+  document.getElementById('ico-history').innerHTML = svgIcon('history');
+  document.getElementById('ico-shield').innerHTML = svgIcon('shield');
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ------------------------------- nav ----------------------------------- */
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 14);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  document.getElementById('burger').onclick = () =>
+    document.getElementById('mobileMenu').classList.toggle('open');
+  document.querySelectorAll('#mobileMenu a').forEach((a) =>
+    a.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'))
+  );
+
+  /* ------------------------- static fallbacks ---------------------------- */
+  const FALLBACK_MODELS = [
+    { name: 'Claude Sonnet', vendor: 'Anthropic', tier: 'Pro', icon: 'claude', color: '#d97757', desc: 'Best for long reasoning, code and writing.' },
+    { name: 'GPT-4o', vendor: 'OpenAI', tier: 'Pro', icon: 'openai', color: '#10a37f', desc: 'Great all round assistant, fast and precise.' },
+    { name: 'DeepSeek R1', vendor: 'DeepSeek', tier: 'Pro', icon: 'deepseek', color: '#4d6bfe', desc: 'Deep step-by-step reasoning on complex maths.' },
+    { name: 'Gemini 2.0', vendor: 'Google', tier: 'Plus', icon: 'gemini', color: '#4285f4', desc: 'Multimodal speed with a huge context window.' },
+    { name: 'Llama 3.3', vendor: 'Meta', tier: 'Free', icon: 'llama', color: '#0866ff', desc: 'Open weights, blazing fast, fully free tier.' },
+    { name: 'Grok Beta', vendor: 'xAI', tier: 'Pro', icon: 'grok', color: '#8b5cf6', desc: 'Real-time flavoured answers with a punch.' },
+    { name: 'Mistral Large', vendor: 'Mistral', tier: 'Plus', icon: 'mistral', color: '#ff7000', desc: 'Efficient European models, strong in code.' },
+    { name: 'Qwen Max', vendor: 'Alibaba', tier: 'Plus', icon: 'qwen', color: '#615ced', desc: 'Excellent multilingual understanding.' }
+  ];
+
+  const FALLBACK_PLANS = [
+    { id: 'free', name: 'Free', price: 0, tokens: 5000, perks: ['5,000 starter tokens', '60 messages / day', 'All base models', 'File upload (5MB)'] },
+    { id: 'starter', name: 'Starter', price: 149, tokens: 200000, perks: ['200,000 tokens', '500 messages / day', 'Priority routing', 'File upload (10MB)'] },
+    { id: 'pro', name: 'Pro', price: 499, tokens: 1000000, popular: true, perks: ['1,000,000 tokens', 'Unlimited daily chat', 'Faster API rotation', 'File upload (25MB)'] },
+    { id: 'business', name: 'Business', price: 1299, tokens: 5000000, perks: ['5,000,000 tokens', 'Team ready', 'Highest rate limit', 'File upload (50MB)'] }
+  ];
+
+  /* ---------------------------- model cards ------------------------------ */
+  function tierColor(tier) {
+    const t = String(tier || '').toLowerCase();
+    if (t === 'free') return { bg: 'rgba(52,211,153,.15)', c: '#6ee7b7', b: 'rgba(52,211,153,.4)' };
+    if (t === 'plus') return { bg: 'rgba(34,211,238,.14)', c: '#67e8f9', b: 'rgba(34,211,238,.4)' };
+    return { bg: 'rgba(245,199,106,.14)', c: '#f5c76a', b: 'rgba(245,199,106,.4)' };
+  }
+
+  function renderModels(models) {
+    const grid = document.getElementById('modelsGrid');
+    grid.innerHTML = models
+      .map(
+        (m) => `
+      <article class="model-card fade-up" style="--mc:${hexA(m.color, 0.26)}">
+        <div class="mc-top">
+          <span class="mc-logo" style="background:${hexA(m.color, 0.15)};color:${m.color};border-color:${hexA(m.color, 0.32)}">
+            ${svgIcon(m.icon)}
+          </span>
+          <div class="grow">
+            <div class="mc-name">${escapeHtml(m.name)}</div>
+            <div class="mc-vendor">${escapeHtml(m.vendor)}</div>
+          </div>
+        </div>
+        <p class="mc-desc">${escapeHtml(m.desc || '')}</p>
+        <div class="mc-foot">
+          <span class="tier" style="background:${tierColor(m.tier).bg};color:${tierColor(m.tier).c};border:1px solid ${tierColor(m.tier).b}">${escapeHtml(m.tier || 'Pro')}</span>
+          <a href="/login?mode=signup" class="btn btn-ghost btn-xs">Try free</a>
+        </div>
+      </article>`
+      )
+      .join('');
+
+    grid.querySelectorAll('.model-card').forEach((c) => {
+      c.addEventListener('mousemove', (e) => {
+        const r = c.getBoundingClientRect();
+        c.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
+        c.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
+      });
+    });
+    observeReveals(grid);
+  }
+
+  function hexA(hex, a) {
+    const h = String(hex || '#6366f1').replace('#', '');
+    const full = h.length === 3 ? h.split('').map((x) => x + x).join('') : h;
+    const r = parseInt(full.slice(0, 2), 16) || 99;
+    const g = parseInt(full.slice(2, 4), 16) || 102;
+    const b = parseInt(full.slice(4, 6), 16) || 241;
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  /* ------------------------------- marquee ------------------------------- */
+  function renderMarquee(models) {
+    const mq = document.getElementById('marquee');
+    const items = models
+      .map(
+        (m) => `<div class="mq-item"><span class="m-ico" style="color:${m.color}">${svgIcon(m.icon)}</span>${escapeHtml(m.name)}</div>`
+      )
+      .join('');
+    mq.innerHTML = items + items;
+  }
+
+  /* ---------------------------- pricing cards ---------------------------- */
+  function renderPlans(plans, payment) {
+    const grid = document.getElementById('priceGrid');
+    grid.innerHTML = plans
+      .map(
+        (p) => `
+      <div class="price-card fade-up ${p.popular ? 'popular' : ''}">
+        ${p.popular ? '<div class="pop-tag">Most popular</div>' : ''}
+        <div class="pc-name">${escapeHtml(p.name)}</div>
+        <div class="pc-price">
+          <span class="amt">${p.price > 0 ? money(p.price) : 'Free'}</span>
+          ${p.price > 0 ? '<span class="per">/ month</span>' : ''}
+        </div>
+        <div class="pc-tokens">${num(p.tokens)} tokens included</div>
+        <ul class="pc-perks">
+          ${(p.perks || []).map((x) => `<li>${svgIcon('check')}<span>${escapeHtml(x)}</span></li>`).join('')}
+        </ul>
+        <a href="/login?mode=signup" class="btn ${p.popular ? 'btn-primary' : 'btn-ghost'} btn-block">
+          ${p.price > 0 ? 'Choose ' + escapeHtml(p.name) : 'Start free'}
+        </a>
+      </div>`
+      )
+      .join('');
+    observeReveals(grid);
+
+    const payNote = document.getElementById('payNote');
+    const payBadge = document.getElementById('payBadge');
+    if (payment) {
+      const mode = payment.mode || 'manual';
+      const label =
+        mode === 'manual' ? 'UPI / manual verification' : mode === 'razorpay' ? 'Razorpay checkout' : 'Cashfree checkout';
+      payBadge.innerHTML = `<span class="badge badge-ok">${svgIcon('shield')} Secure ${escapeHtml(label)}</span>`;
+      payNote.textContent =
+        mode === 'manual'
+          ? 'Pay via UPI and upload your UTR — the admin approves it and your plan activates in minutes.'
+          : 'Cards, UPI and wallets accepted. Your plan activates automatically after payment.';
+    }
+  }
+
+  /* -------------------------------- stats -------------------------------- */
+  function renderStats(plans) {
+    const stats = [
+      { v: '8+', l: 'Premium models' },
+      { v: num(plans.reduce((a, p) => Math.max(a, p.tokens || 0), 0)), l: 'Max tokens per plan' },
+      { v: '99.9%', l: 'Router uptime' },
+      { v: '<1s', l: 'First token latency' }
+    ];
+    document.getElementById('stats').innerHTML = stats
+      .map(
+        (s) => `<div class="stat fade-up"><div class="v grad-text">${escapeHtml(s.v)}</div><div class="l">${escapeHtml(s.l)}</div></div>`
+      )
+      .join('');
+    observeReveals(document.getElementById('stats'));
+  }
+
+  /* --------------------------------- faq --------------------------------- */
+  const FAQ = [
+    ['What exactly do I get with one subscription?', 'Every model in the line-up — Claude, GPT-4o, Gemini, DeepSeek, Llama, Grok, Mistral and Qwen — inside a single chat interface with full history, file uploads and export.'],
+    ['How do tokens work?', 'Each message costs a small number of tokens. Your plan gives you a big token balance plus a daily message limit. Tokens are refunded automatically if a request fails.'],
+    ['Can I use my own API keys?', 'Yes — that is the point. The admin console lets you attach as many upstream API keys as you want. They rotate invisibly and users only ever see the public model names.'],
+    ['How do payments work?', 'Manual UPI payments are verified by the admin, or use Razorpay / Cashfree for instant activation. You can switch the gateway any time from the admin Settings tab.'],
+    ['Is my chat history private?', 'Chats are scoped to your account and served only through authenticated endpoints. Passwords are hashed with scrypt and every session can be revoked instantly.'],
+    ['What happens if a provider goes down?', 'The router retries on the next healthy key within the same request. If all keys fail, your tokens are refunded and you see a clear message.']
+  ];
+
+  function renderFaq() {
+    document.getElementById('faqList').innerHTML = FAQ.map(
+      ([q, a]) => `
+      <details class="faq-item fade-up">
+        <summary>${escapeHtml(q)}${svgIcon('chevron')}</summary>
+        <p>${escapeHtml(a)}</p>
+      </details>`
+    ).join('');
+    observeReveals(document.getElementById('faqList'));
+  }
+
+  /* ----------------------------- demo animation -------------------------- */
+  function renderDemo(models) {
+    const demoModels = document.getElementById('demoModels');
+    const picks = models.slice(0, 4);
+    demoModels.innerHTML = picks
+      .map(
+        (m, i) =>
+          `<span class="chip-mini ${i === 0 ? 'active' : ''}" data-chip="${i}" style="--c:${m.color}">
+             <span class="m-ico" style="color:${m.color}">${svgIcon(m.icon)}</span>${escapeHtml(m.name.split(' ')[0])}
+           </span>`
+      )
+      .join('');
+
+    const script = [
+      { role: 'user', text: 'Summarise this 40-page PDF and pull out every deadline as a table.' },
+      {
+        role: 'ai',
+        text: 'Done — I read all 40 pages. Here are the <b>6 deadlines</b> I found:<br><br>• <b>12 Feb</b> — vendor onboarding<br>• <b>03 Mar</b> — security audit<br>• <b>21 Mar</b> — beta launch<br><br>Want me to export this as CSV?'
+      },
+      { role: 'user', text: 'Now rewrite the risk section for a non-technical board.' },
+      { role: 'ai', text: 'Rewritten in plain language — no jargon, three short paragraphs, one call to action.' }
+    ];
+
+    const body = document.getElementById('demoBody');
+    const modelLabel = document.getElementById('demoModel');
+    let idx = 0;
+
+    function typeInto(el, html, done) {
+      const plain = html;
+      let i = 0;
+      el.innerHTML = '<span class="cursor"></span>';
+      const step = () => {
+        i += Math.max(3, Math.ceil(plain.length / 90));
+        if (i >= plain.length) {
+          el.innerHTML = plain;
+          done && done();
+          return;
+        }
+        // cut at a safe point (avoid splitting html tags)
+        let slice = plain.slice(0, i);
+        const lastTag = slice.lastIndexOf('<');
+        const lastClose = slice.lastIndexOf('>');
+        if (lastTag > lastClose) slice = slice.slice(0, lastTag);
+        el.innerHTML = slice + '<span class="cursor"></span>';
+        setTimeout(step, 16);
+      };
+      step();
+    }
+
+    function next() {
+      const msg = script[idx % script.length];
+      const el = document.createElement('div');
+      el.className = 'bub ' + (msg.role === 'user' ? 'user' : 'ai');
+      body.appendChild(el);
+      if (body.children.length > 4) body.removeChild(body.children[0]);
+
+      if (msg.role === 'ai') {
+        const m = picks[(idx / 2) % picks.length | 0] || picks[0];
+        modelLabel.innerHTML = `<span class="m-ico" style="color:${m.color}">${svgIcon(m.icon)}</span> ${escapeHtml(m.name)}`;
+        document.querySelectorAll('.chip-mini').forEach((c) => c.classList.remove('active'));
+        const ci = picks.indexOf(m);
+        document.querySelector(`.chip-mini[data-chip="${ci}"]`)?.classList.add('active');
+        typeInto(el, msg.text, () => setTimeout(() => { idx++; next(); }, 1500));
+      } else {
+        el.textContent = msg.text;
+        setTimeout(() => { idx++; next(); }, 900);
+      }
+    }
+    setTimeout(next, 500);
+  }
+
+  /* ------------------------------- bootstrap ----------------------------- */
+  async function boot() {
+    renderFaq();
+
+    let data = null;
+    try {
+      data = await api('/bootstrap');
+    } catch (e) {
+      console.warn('bootstrap failed, using fallbacks', e);
+    }
+
+    const models = (data && data.models && data.models.length ? data.models : FALLBACK_MODELS);
+    const plans = (data && data.plans && data.plans.length ? data.plans : FALLBACK_PLANS);
+    const payment = data ? data.settings.payment : null;
+
+    renderModels(models);
+    renderMarquee(models);
+    renderPlans(plans, payment);
+    renderStats(plans);
+    renderDemo(models);
+
+    /* pool visualisation */
+    const poolViz = document.getElementById('poolViz');
+    const rows = [
+      ['API key #1', 100],
+      ['API key #2', 74],
+      ['API key #3', 41],
+      ['API key #4', 12]
+    ];
+    poolViz.innerHTML = rows
+      .map(
+        ([n, p]) =>
+          `<div class="pool-row"><span style="min-width:74px">${n}</span>
+            <span class="bar"><i style="width:${p}%"></i></span>
+            <span style="min-width:34px;text-align:right;color:${p < 20 ? '#fbbf24' : '#6ee7b7'}">${p - 10 > 0 ? p - 10 : 0}%</span></div>`
+      )
+      .join('');
+
+    if (data && data.settings) {
+      document.getElementById('brandName').textContent = data.settings.brandName || 'FreeModel VIP';
+      document.getElementById('proofTokens').textContent = num(data.settings.freeSignupTokens || 5000);
+      document.title = `${data.settings.brandName || 'FreeModel VIP'} — Every premium AI model. One subscription.`;
+    }
+
+    APP.session.settings = data ? data.settings : null;
+    observeReveals();
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>

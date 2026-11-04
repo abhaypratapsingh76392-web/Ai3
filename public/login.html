@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#05070c" />
+<title>Sign in — FreeModel VIP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/theme.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='.5' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='url(%23g)'/%3E%3Cpath d='M16 6l2.9 7.1L26 16l-7.1 2.9L16 26l-2.9-7.1L6 16l7.1-2.9L16 6z' fill='%23fff'/%3E%3C/svg%3E" />
+<style>
+.auth-wrap{min-height:100dvh;display:grid;grid-template-columns:1fr 1fr}
+.auth-left{
+  position:relative;padding:48px;display:flex;flex-direction:column;justify-content:space-between;
+  border-right:1px solid var(--line);overflow:hidden;
+}
+.auth-left::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(620px 420px at 20% 12%,rgba(99,102,241,.3),transparent 62%),
+             radial-gradient(520px 420px at 84% 88%,rgba(34,211,238,.2),transparent 60%),
+             radial-gradient(520px 400px at 60% 40%,rgba(139,92,246,.18),transparent 62%);
+}
+.auth-right{display:flex;align-items:center;justify-content:center;padding:36px 24px}
+.auth-card{width:min(430px,100%)}
+.auth-head{margin-bottom:26px}
+.auth-head h1{font-size:29px;letter-spacing:-.035em;margin-bottom:9px}
+.auth-head p{color:var(--muted);font-size:14.2px}
+
+.tabs{display:flex;gap:5px;padding:5px;background:rgba(6,10,20,.8);border:1px solid var(--line-2);border-radius:14px;margin-bottom:22px}
+.tabs button{flex:1;padding:11px;border:none;border-radius:10px;background:transparent;color:var(--muted);font-weight:700;font-size:13.6px;cursor:pointer;transition:.18s}
+.tabs button.active{background:var(--grad);color:#fff;box-shadow:0 10px 26px -14px rgba(99,102,241,1)}
+
+.gbtn{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:11px;padding:13px;
+  border-radius:13px;border:1px solid var(--line-2);background:rgba(255,255,255,.055);
+  color:var(--txt);font-weight:700;font-size:14.4px;cursor:pointer;transition:.18s;
+}
+.gbtn:hover{background:rgba(255,255,255,.1);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.gbtn svg{width:19px;height:19px;flex:0 0 auto}
+.sep{display:flex;align-items:center;gap:13px;margin:20px 0;color:var(--dim);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.sep::before,.sep::after{content:"";flex:1;height:1px;background:var(--line)}
+.pw-wrap{position:relative}
+.pw-wrap .input{padding-right:44px}
+.pw-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--dim);cursor:pointer;padding:7px;border-radius:8px;display:grid;place-items:center}
+.pw-toggle:hover{color:#fff;background:rgba(255,255,255,.07)}
+.pw-toggle svg{width:17px;height:17px}
+
+.strength{height:4px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
+.strength i{display:block;height:100%;width:0;border-radius:99px;transition:width .25s,background .25s}
+
+.legal{font-size:11.8px;color:var(--dim);text-align:center;margin-top:18px;line-height:1.65}
+.legal a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+
+/* left panel art */
+.art-brand{display:flex;align-items:center;gap:11px;font-weight:850;font-size:17px}
+.art-body h2{font-size:clamp(26px,2.6vw,38px);letter-spacing:-.04em;line-height:1.1;max-width:420px}
+.art-body p{color:var(--muted);margin-top:16px;max-width:400px;font-size:14.6px;line-height:1.66}
+.art-models{display:flex;flex-wrap:wrap;gap:9px;margin-top:30px;max-width:430px}
+.art-chip{display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:11px;border:1px solid var(--line);background:rgba(11,18,32,.7);font-size:12.5px;font-weight:650;color:var(--muted);backdrop-filter:blur(8px);animation:chipIn .5s backwards}
+.art-chip svg{width:16px;height:16px}
+@keyframes chipIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.art-quote{border-left:2px solid rgba(99,102,241,.6);padding-left:16px;max-width:400px}
+.art-quote p{font-size:14px;color:#cbd7ea;font-style:italic;line-height:1.6;margin:0}
+.art-quote .who{font-size:12.4px;color:var(--dim);margin-top:9px;font-style:normal;font-weight:650}
+
+.quick-btns{display:grid;gap:9px;margin-top:14px}
+.quick-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.028);cursor:pointer;transition:.18s;text-align:left;width:100%;color:var(--txt);font-family:inherit}
+.quick-btn:hover{background:rgba(99,102,241,.12);border-color:rgba(99,102,241,.42);transform:translateX(2px)}
+.quick-btn .qi{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(99,102,241,.18);color:#a5b4fc;flex:0 0 auto}
+.quick-btn .qi svg{width:17px;height:17px}
+.quick-btn .qt{font-size:13.4px;font-weight:700}
+.quick-btn .qs{font-size:11.6px;color:var(--dim)}
+@media(max-width:940px){
+  .auth-wrap{grid-template-columns:1fr}
+  .auth-left{display:none}
+  .auth-right{padding:26px 18px;min-height:100dvh}
+}
+</style>
+</head>
+<body>
+<div class="auth-wrap">
+  <!-- ------------------------------ LEFT ART ------------------------------ -->
+  <aside class="auth-left">
+    <a class="art-brand" href="/">
+      <span class="brand-mark" id="brandMark" style="width:38px;height:38px;border-radius:12px;background:var(--grad);display:grid;place-items:center;box-shadow:0 12px 30px -12px rgba(99,102,241,.95)"></span>
+      <span id="brandName">FreeModel VIP</span>
+    </a>
+
+    <div class="art-body">
+      <h2>One login.<br /><span class="grad-text">Every premium AI.</span></h2>
+      <p>Claude, GPT-4o, Gemini, DeepSeek and more — all in one beautifully fast chat with history, files and instant model switching.</p>
+      <div class="art-models" id="artModels"></div>
+    </div>
+
+    <div class="art-quote">
+      <p>“I cancelled four AI subscriptions. This one chat replaces them all — and switching models mid-conversation is genuinely magic.”</p>
+      <div class="who">— Aarav S., product designer</div>
+    </div>
+  </aside>
+
+  <!-- ------------------------------ AUTH FORM ----------------------------- -->
+  <main class="auth-right">
+    <div class="auth-card">
+      <button class="btn btn-ghost btn-sm" onclick="location.href='/'" style="margin-bottom:20px">← Back to home</button>
+
+      <div class="auth-head">
+        <h1 id="authTitle">Welcome back</h1>
+        <p id="authSub">Sign in to continue to your dashboard.</p>
+      </div>
+
+      <div class="tabs" id="tabs">
+        <button data-tab="login" class="active">Sign in</button>
+        <button data-tab="signup">Create account</button>
+      </div>
+
+      <button class="gbtn" id="googleBtn">
+        <span id="gIcon"></span>
+        <span>Continue with Google</span>
+      </button>
+
+      <div id="guestWrap" style="margin-top:10px">
+        <button class="gbtn" id="guestBtn" style="font-size:13.6px;padding:11px">
+          <span id="guestIcon"></span><span>Continue as guest</span>
+        </button>
+      </div>
+
+      <div class="sep">or use email</div>
+
+      <form id="authForm" autocomplete="on" novalidate>
+        <div class="field" id="nameField" style="display:none">
+          <label class="label" for="name">Full name</label>
+          <input class="input" id="name" name="name" type="text" placeholder="Akshay Sharma" autocomplete="name" />
+        </div>
+
+        <div class="field">
+          <label class="label" for="email">Email address</label>
+          <input class="input" id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email" />
+        </div>
+
+        <div class="field">
+          <label class="label" for="password">Password</label>
+          <div class="pw-wrap">
+            <input class="input" id="password" name="password" type="password" placeholder="At least 6 characters" autocomplete="current-password" />
+            <button type="button" class="pw-toggle" id="pwToggle" aria-label="Show password"></button>
+          </div>
+          <div class="strength" id="strength" style="display:none"><i></i></div>
+        </div>
+
+        <div class="row-between" style="margin:-4px 0 16px" id="forgotRow">
+          <label class="checkline"><input type="checkbox" id="remember" checked /> Remember me</label>
+          <button type="button" class="dim small" id="forgotBtn" style="background:none;border:none;cursor:pointer">Forgot password?</button>
+        </div>
+
+        <div class="err-text" id="err"></div>
+
+        <button class="btn btn-primary btn-block btn-lg" id="submitBtn" type="submit">Sign in</button>
+      </form>
+
+      <div id="quickWrap" style="margin-top:26px;display:none">
+        <div class="divider"></div>
+        <p class="tiny dim" style="margin-bottom:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Quick start</p>
+        <div class="quick-btns">
+          <button class="quick-btn" data-quick="general">
+            <span class="qi" id="q1"></span>
+            <span><span class="qt">Ask anything</span><br /><span class="qs">General assistant · fastest model</span></span>
+          </button>
+          <button class="quick-btn" data-quick="code">
+            <span class="qi" id="q2"></span>
+            <span><span class="qt">Write or fix code</span><br /><span class="qs">Reasoning models tuned for devs</span></span>
+          </button>
+          <button class="quick-btn" data-quick="image">
+            <span class="qi" id="q3"></span>
+            <span><span class="qt">Read a document</span><br /><span class="qs">Upload a PDF and ask questions</span></span>
+          </button>
+        </div>
+      </div>
+
+      <p class="legal">
+        By continuing you agree to our <a href="/#faq">Terms</a> and <a href="/#faq">Privacy Policy</a>.
+        We never post anything to your Google account.
+      </p>
+    </div>
+  </main>
+</div>
+
+<!-- Firebase SDK (compat build = no bundler required) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="/assets/js/icons.js"></script>
+<script src="/assets/js/core.js"></script>
+<script>
+(function () {
+  'use strict';
+  const { api, toast, escapeHtml, store: ls } = APP;
+
+  const $ = (s) => document.querySelector(s);
+  let mode = 'login';
+  let firebaseReady = false;
+  let boot = null;
+
+  /* ------------------------------ chrome -------------------------------- */
+  $('#brandMark').innerHTML = svgIcon('spark');
+  $('#gIcon').innerHTML = svgIcon('google');
+  $('#guestIcon').innerHTML = svgIcon('user');
+  $('#pwToggle').innerHTML = svgIcon('eye');
+  $('#q1').innerHTML = svgIcon('chat');
+  $('#q2').innerHTML = svgIcon('bolt');
+  $('#q3').innerHTML = svgIcon('file');
+
+  const ART = [
+    ['claude', 'Claude Sonnet', '#d97757'],
+    ['openai', 'GPT-4o', '#10a37f'],
+    ['gemini', 'Gemini 2.0', '#4285f4'],
+    ['deepseek', 'DeepSeek R1', '#4d6bfe'],
+    ['llama', 'Llama 3.3', '#0866ff'],
+    ['grok', 'Grok', '#8b5cf6'],
+    ['mistral', 'Mistral', '#ff7000'],
+    ['qwen', 'Qwen Max', '#615ced']
+  ];
+  $('#artModels').innerHTML = ART.map(
+    ([ic, name, c], i) =>
+      `<span class="art-chip" style="animation-delay:${i * 60}ms;color:#b7c6de">
+        <span style="color:${c};display:grid;place-items:center">${svgIcon(ic)}</span>${escapeHtml(name)}
+      </span>`
+  ).join('');
+
+  /* ------------------------------- tabs -------------------------------- */
+  function setMode(next) {
+    mode = next;
+    document.querySelectorAll('#tabs button').forEach((b) =>
+      b.classList.toggle('active', b.dataset.tab === mode)
+    );
+    const isSignup = mode === 'signup';
+    $('#authTitle').textContent = isSignup ? 'Create your account' : 'Welcome back';
+    $('#authSub').textContent = isSignup
+      ? 'Free starter tokens land in your balance instantly.'
+      : 'Sign in to continue to your dashboard.';
+    $('#nameField').style.display = isSignup ? 'flex' : 'none';
+    $('#forgotRow').style.display = isSignup ? 'none' : 'flex';
+    $('#submitBtn').textContent = isSignup ? 'Create free account' : 'Sign in';
+    $('#password').setAttribute('autocomplete', isSignup ? 'new-password' : 'current-password');
+    $('#strength').style.display = isSignup ? 'block' : 'none';
+    $('#err').textContent = '';
+    const u = new URL(location.href);
+    u.searchParams.set('mode', mode);
+    history.replaceState(null, '', u.toString());
+  }
+
+  document.querySelectorAll('#tabs button').forEach((b) => (b.onclick = () => setMode(b.dataset.tab)));
+
+  /* -------------------------- password helpers -------------------------- */
+  $('#pwToggle').onclick = () => {
+    const inp = $('#password');
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    $('#pwToggle').innerHTML = svgIcon(show ? 'eyeOff' : 'eye');
+  };
+
+  $('#password').addEventListener('input', (e) => {
+    const v = e.target.value;
+    let score = 0;
+    if (v.length >= 6) score++;
+    if (v.length >= 10) score++;
+    if (/[A-Z]/.test(v) && /[a-z]/.test(v)) score++;
+    if (/\d/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+    const pct = Math.min(100, (score / 5) * 100);
+    const col = score <= 1 ? '#fb7185' : score <= 3 ? '#fbbf24' : '#34d399';
+    const bar = $('#strength i');
+    bar.style.width = pct + '%';
+    bar.style.background = col;
+  });
+
+  /* ------------------------------ bootstrap ----------------------------- */
+  async function loadBootstrap() {
+    try {
+      boot = await api('/bootstrap');
+      APP.session.settings = boot.settings;
+      if (boot.settings.brandName) {
+        $('#brandName').textContent = boot.settings.brandName;
+        document.title = `Sign in — ${boot.settings.brandName}`;
+      }
+      if (!boot.settings.emailLogin) {
+        $('#authForm').style.display = 'none';
+        $('.sep').style.display = 'none';
+      }
+      if (!boot.settings.googleLogin) {
+        $('#googleBtn').style.display = 'none';
+      }
+      if (boot.settings.maintenance) {
+        showError('The platform is in maintenance mode. You can still sign in.');
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  }
+
+  function showError(msg) {
+    $('#err').textContent = msg || '';
+  }
+
+  /* ------------------------------- firebase ----------------------------- */
+  function initFirebase() {
+    const cfg = boot && boot.firebase;
+    if (!cfg || !cfg.apiKey || !window.firebase) return false;
+    try {
+      if (!firebase.apps.length) firebase.initializeApp(cfg);
+      firebaseReady = true;
+      return true;
+    } catch (e) {
+      console.warn('Firebase init failed', e);
+      return false;
+    }
+  }
+
+  async function googleSignIn() {
+    if (!boot) await loadBootstrap();
+    if (!initFirebase()) {
+      return showError(
+        'Google sign-in is not configured yet. Add your Firebase web API key in the server environment (FB_API_KEY).'
+      );
+    }
+    const btn = $('#googleBtn');
+    const original = btn.innerHTML;
+    btn.innerHTML = '<span class="spin" style="width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite"></span><span>Opening Google…</span>';
+    btn.disabled = true;
+
+    try {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      const cred = await firebase.auth().signInWithPopup(provider);
+      const idToken = await cred.user.getIdToken();
+      const out = await api('/auth/google', { body: { idToken } });
+      finishLogin(out);
+    } catch (e) {
+      const code = e.code || '';
+      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+        showError('Google sign-in was cancelled.');
+      } else if (code === 'auth/operation-not-supported-in-this-environment' || code === 'auth/popup-blocked') {
+        try {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          await firebase.auth().signInWithRedirect(provider);
+        } catch (e2) {
+          showError(e2.message);
+        }
+      } else {
+        showError(e.message || 'Google sign-in failed.');
+      }
+    } finally {
+      btn.innerHTML = original;
+      btn.disabled = false;
+    }
+  }
+
+  // handle redirect result on return from Google
+  document.addEventListener('DOMContentLoaded', () => {});
+  async function checkRedirect() {
+    if (!boot) await loadBootstrap();
+    if (!initFirebase()) return;
+    try {
+      const res = await firebase.auth().getRedirectResult();
+      if (res && res.user) {
+        const idToken = await res.user.getIdToken();
+        const out = await api('/auth/google', { body: { idToken } });
+        finishLogin(out);
+      }
+    } catch (e) {
+      console.warn('redirect result', e.message);
+    }
+  }
+
+  $('#googleBtn').onclick = googleSignIn;
+
+  /* -------------------------------- guest ------------------------------- */
+  $('#guestBtn').onclick = async (e) => {
+    const btn = e.currentTarget;
+    APP.busy(btn, true);
+    try {
+      const out = await api('/auth/guest', { body: {} });
+      finishLogin(out, true);
+    } catch (err) {
+      showError(err.message);
+      APP.busy(btn, false);
+    }
+  };
+
+  /* ------------------------------- submit ------------------------------- */
+  $('#authForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    showError('');
+    const btn = $('#submitBtn');
+    const email = $('#email').value.trim();
+    const password = $('#password').value;
+    const name = $('#name').value.trim();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return showError('Enter a valid email address.');
+    if (password.length < 6) return showError('Password must be at least 6 characters.');
+    if (mode === 'signup' && name.length < 2) return showError('Please enter your name.');
+
+    APP.busy(btn, true);
+    try {
+      const out =
+        mode === 'signup'
+          ? await api('/auth/signup', { body: { name, email, password } })
+          : await api('/auth/login', { body: { email, password } });
+      finishLogin(out);
+    } catch (err) {
+      showError(err.message);
+      APP.busy(btn, false);
+    }
+  });
+
+  /* ------------------------------ quick start --------------------------- */
+  document.querySelectorAll('[data-quick]').forEach((b) => {
+    b.onclick = async () => {
+      const prompts = {
+        general: 'Introduce yourself and tell me what you can do.',
+        code: 'Help me write clean, well-tested code. Ask what I am building.',
+        image: 'I want to upload a document and ask questions about it.'
+      };
+      APP.busy(b, true);
+      try {
+        const out = await api('/auth/guest', { body: {} });
+        ls.set('pending_prompt', prompts[b.dataset.quick]);
+        finishLogin(out, true);
+      } catch (e) {
+        showError(e.message);
+        APP.busy(b, false);
+      }
+    };
+  });
+
+  /* ------------------------------ finish -------------------------------- */
+  function finishLogin(out, guest) {
+    APP.setToken(out.token);
+    APP.store.set('user', out.user);
+    if (out.user && out.user.plan) APP.store.set('plan', out.user.plan);
+    toast(guest ? 'Welcome! Your guest session is ready.' : `Welcome, ${out.user.name || 'friend'}!`, 'ok');
+    location.href = '/app';
+  }
+
+  /* --------------------------- forgot password -------------------------- */
+  $('#forgotBtn').onclick = () => {
+    APP.modal({
+      title: 'Reset your password',
+      body: `<p class="muted small" style="margin-bottom:14px">Enter your account email and the admin will help you reset it. If you signed in with Google, just use the Google button.</p>
+             <div class="field"><label class="label">Email</label><input class="input" id="fpEmail" type="email" placeholder="you@example.com" /></div>`,
+      footer: `<button class="btn btn-ghost" data-x2>Close</button><button class="btn btn-primary" data-send>Send request</button>`,
+      onOpen(el, close) {
+        el.querySelector('[data-x2]').onclick = close;
+        el.querySelector('[data-send]').onclick = () => {
+          const v = el.querySelector('#fpEmail').value.trim();
+          if (!v) return toast('Enter your email first.', 'err');
+          toast('Request noted. Contact support with this email to reset your password.', 'info', 5000);
+          close();
+        };
+      }
+    });
+  };
+
+  /* -------------------------------- init -------------------------------- */
+  const params = new URLSearchParams(location.search);
+  setMode(params.get('mode') === 'signup' ? 'signup' : 'login');
+  if (params.get('email')) $('#email').value = params.get('email');
+
+  (async () => {
+    await loadBootstrap();
+    $('#quickWrap').style.display = 'block';
+    await checkRedirect();
+    // already signed in? verify then jump
+    const t = APP.store.get('token', '');
+    if (t) {
+      try {
+        await api('/auth/me');
+        location.href = '/app';
+      } catch {
+        APP.setToken('');
+      }
+    }
+  })();
+})();
+</script>
+</body>
+</html>

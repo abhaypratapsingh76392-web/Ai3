@@ -1,0 +1,19 @@
+{
+  "name": "freemodel-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FreeModel VIP - premium multi-model AI chat platform with admin, tokens, plans and payments",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "zip": "node scripts/make-zip.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^2.5.0"
+  }
+}

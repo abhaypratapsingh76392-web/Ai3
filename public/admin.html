@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#05070c" />
+<meta name="robots" content="noindex,nofollow" />
+<title>Admin Console — FreeModel VIP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/theme.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230b1120'/%3E%3Cpath d='M16 6l2.9 7.1L26 16l-7.1 2.9L16 26l-2.9-7.1L6 16l7.1-2.9L16 6z' fill='%23f5c76a'/%3E%3C/svg%3E" />
+<style>
+html,body{height:100%;overflow:hidden}
+/* ---------------------------- LOGIN ---------------------------- */
+.a-login{min-height:100dvh;display:grid;place-items:center;padding:24px}
+.a-card{width:min(420px,100%);padding:34px 30px;border-radius:24px;background:linear-gradient(180deg,rgba(15,23,39,.95),rgba(7,11,20,.97));border:1px solid var(--line-2);box-shadow:var(--shadow)}
+.a-logo{width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,#f8d98d,#e0a94a);display:grid;place-items:center;margin-bottom:18px;box-shadow:0 18px 40px -18px rgba(245,199,106,.9)}
+.a-logo svg{width:26px;height:26px;color:#2a1c02}
+.a-card h1{font-size:23px;letter-spacing:-.03em;margin-bottom:7px}
+.a-card p.sub{color:var(--muted);font-size:13.6px;margin-bottom:22px}
+.a-err{color:var(--err);font-size:13px;min-height:18px;margin-bottom:8px}
+
+/* ---------------------------- SHELL ---------------------------- */
+.a-shell{display:flex;height:100dvh;width:100%}
+.a-side{width:236px;flex:0 0 236px;background:linear-gradient(180deg,rgba(10,16,28,.98),rgba(5,8,14,1));border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:30;transition:transform .28s}
+.a-brand{padding:16px 16px 12px;display:flex;align-items:center;gap:10px;font-weight:850;font-size:14.5px}
+.a-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#f8d98d,#e0a94a);display:grid;place-items:center;flex:0 0 auto}
+.a-mark svg{width:17px;height:17px;color:#2a1c02}
+.a-nav{flex:1;overflow-y:auto;padding:6px 8px}
+.a-nav button{
+  width:100%;display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:10px;
+  border:none;background:transparent;color:var(--muted);font-size:13.2px;font-weight:650;
+  cursor:pointer;text-align:left;transition:.15s;font-family:inherit;margin-bottom:2px;
+}
+.a-nav button svg{width:16px;height:16px;flex:0 0 auto}
+.a-nav button:hover{background:rgba(255,255,255,.06);color:#fff}
+.a-nav button.active{background:rgba(245,199,106,.14);color:#ffe2a8;box-shadow:inset 2px 0 0 var(--gold)}
+.a-nav .n-badge{margin-left:auto;background:rgba(251,113,133,.2);color:#ffb4c0;font-size:10px;font-weight:800;padding:1px 6px;border-radius:99px}
+.a-side-foot{padding:10px;border-top:1px solid var(--line)}
+
+.a-main{flex:1;display:flex;flex-direction:column;min-width:0}
+.a-top{height:58px;display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid var(--line);background:rgba(6,10,18,.7);backdrop-filter:blur(14px);flex:0 0 auto}
+.a-top h2{font-size:15.5px;letter-spacing:-.02em}
+.a-body{flex:1;overflow-y:auto;padding:20px}
+.a-wrap{max-width:1280px;margin:0 auto}
+
+/* ---------------------------- CARDS ---------------------------- */
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.kpi{padding:16px 17px;border-radius:15px;border:1px solid var(--line);background:linear-gradient(165deg,rgba(16,24,40,.8),rgba(8,13,23,.86));position:relative;overflow:hidden}
+.kpi .k-l{font-size:10.8px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:800}
+.kpi .k-v{font-size:25px;font-weight:900;letter-spacing:-.04em;margin-top:5px}
+.kpi .k-s{font-size:11.4px;color:var(--dim);margin-top:2px}
+.kpi .k-ico{position:absolute;right:14px;top:14px;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(99,102,241,.15);color:#a5b4fc}
+.kpi .k-ico svg{width:15px;height:15px}
+.kpi.gold .k-ico{background:rgba(245,199,106,.16);color:var(--gold)}
+.kpi.ok .k-ico{background:rgba(52,211,153,.16);color:#6ee7b7}
+.kpi.err .k-ico{background:rgba(251,113,133,.16);color:#ffb4c0}
+
+.panel{border:1px solid var(--line);border-radius:16px;background:rgba(10,16,28,.6);overflow:hidden}
+.p-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.p-title{font-size:13.8px;font-weight:750}
+.p-body{padding:16px}
+.p-body.tight{padding:0}
+
+.chart{height:150px;display:flex;align-items:flex-end;gap:5px;padding:10px 4px 0}
+.chart .bar{flex:1;background:linear-gradient(180deg,#6366f1,#22d3ee);border-radius:4px 4px 2px 2px;min-height:3px;position:relative;transition:height .4s;opacity:.85}
+.chart .bar:hover{opacity:1}
+.chart-x{display:flex;gap:5px;padding:5px 4px 0}
+.chart-x span{flex:1;text-align:center;font-size:9px;color:var(--dim);overflow:hidden}
+
+/* ---------------------------- TABLES --------------------------- */
+.mini{font-size:11.8px;color:var(--dim)}
+.chipx{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:6px;font-size:10.6px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.avatar-s{width:27px;height:27px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-size:10.5px;font-weight:800;color:#fff;flex:0 0 auto;overflow:hidden}
+.avatar-s img{width:100%;height:100%;object-fit:cover}
+.u-cell{display:flex;align-items:center;gap:9px;min-width:150px}
+.u-cell .u-n{font-size:12.8px;font-weight:700;line-height:1.25}
+.u-cell .u-e{font-size:10.8px;color:var(--dim)}
+
+/* ---------------------------- FORMS ---------------------------- */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-grid .full{grid-column:1/-1}
+.f-row{display:flex;flex-direction:column;gap:6px}
+.f-row label{font-size:11.6px;font-weight:700;color:var(--muted);letter-spacing:.02em}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.toolbar input.search{flex:1;min-width:170px;padding:9px 12px;border-radius:10px;border:1px solid var(--line-2);background:rgba(4,8,15,.7);color:var(--txt);font-size:13px;font-family:inherit}
+.toolbar input.search:focus{outline:none;border-color:rgba(99,102,241,.6)}
+
+/* provider row */
+.prov{padding:13px 15px;border-bottom:1px solid rgba(120,150,200,.1);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.prov:last-child{border:0}
+.prov .pv-n{font-size:13.2px;font-weight:750}
+.prov .pv-m{font-size:11.4px;color:var(--dim);font-family:var(--mono)}
+.prov .pv-bar{width:96px;height:5px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden}
+.prov .pv-bar i{display:block;height:100%;background:var(--grad)}
+.prov .pv-acts{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+
+/* toast host override for admin */
+.a-login-wrap{display:none}
+@media(max-width:1000px){
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3,.g2{grid-template-columns:1fr}
+  .a-side{position:fixed;top:0;left:0;bottom:0;transform:translateX(-102%)}
+  .a-side.open{transform:none}
+  .a-burger{display:grid !important}
+  .form-grid{grid-template-columns:1fr}
+}
+.a-burger{display:none;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#fff;width:34px;height:34px;border-radius:9px;cursor:pointer;place-items:center}
+.a-burger svg{width:17px;height:17px}
+</style>
+</head>
+<body>
+
+<!-- ============================== LOGIN ============================== -->
+<div class="a-login" id="loginView">
+  <div class="a-card">
+    <div class="a-logo" id="aLogo"></div>
+    <h1>Admin console</h1>
+    <p class="sub">Restricted area. Enter the admin password to manage users, APIs, plans and payments.</p>
+    <div class="field">
+      <label class="label" for="adminPass">Admin password</label>
+      <input class="input" id="adminPass" type="password" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+    <div class="a-err" id="loginErr"></div>
+    <button class="btn btn-gold btn-block btn-lg" id="loginBtn">Unlock console</button>
+    <p class="hint center" style="margin-top:16px">All attempts are logged with IP address.</p>
+  </div>
+</div>
+
+<!-- ============================== SHELL ============================== -->
+<div class="a-shell" id="shell" style="display:none">
+  <aside class="a-side" id="aSide">
+    <div class="a-brand"><span class="a-mark" id="aMark"></span><span>Admin Console</span></div>
+    <nav class="a-nav" id="aNav"></nav>
+    <div class="a-side-foot">
+      <button class="btn btn-ghost btn-sm btn-block" id="logoutBtn">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="a-main">
+    <div class="a-top">
+      <button class="a-burger" id="aBurger"></button>
+      <h2 id="pageTitle">Dashboard</h2>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <span class="badge" id="dbBadge">storage</span>
+        <button class="btn btn-ghost btn-sm" id="refreshBtn">Refresh</button>
+      </div>
+    </div>
+    <div class="a-body"><div class="a-wrap" id="aBody"></div></div>
+  </main>
+</div>
+
+<script src="/assets/js/icons.js"></script>
+<script src="/assets/js/core.js"></script>
+<script>
+(function () {
+  'use strict';
+  const { api, toast, escapeHtml, escapeAttr, num, money, timeAgo, fmtDate, confirm: confirmBox, store: ls, modal } = APP;
+
+  let adminToken = ls.get('adminToken', '');
+  let page = 'dashboard';
+  let cache = {};
+
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  $('#aLogo').innerHTML = svgIcon('shield');
+  $('#aMark').innerHTML = svgIcon('spark');
+  $('#aBurger').innerHTML = svgIcon('menu');
+  $('#refreshBtn').innerHTML = svgIcon('refresh');
+
+  function adminApi(path, opts) {
+    if (!adminToken) return Promise.reject(new Error('Not signed in'));
+    return api('/admin' + path, opts);
+  }
+
+  /* ------------------------------- login -------------------------------- */
+  async function tryLogin() {
+    const pass = $('#adminPass').value;
+    if (!pass) return ($('#loginErr').textContent = 'Enter the admin password.');
+    const btn = $('#loginBtn');
+    APP.busy(btn, true);
+    try {
+      const out = await api('/admin/login', { body: { password: pass } });
+      adminToken = out.adminToken;
+      ls.set('adminToken', adminToken);
+      enter();
+    } catch (e) {
+      $('#loginErr').textContent = e.message;
+      APP.busy(btn, false);
+    }
+  }
+  $('#loginBtn').onclick = tryLogin;
+  $('#adminPass').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') tryLogin();
+  });
+
+  function enter() {
+    $('#loginView').style.display = 'none';
+    $('#shell').style.display = 'flex';
+    buildNav();
+    go('dashboard');
+  }
+
+  $('#logoutBtn').onclick = () => {
+    adminToken = '';
+    ls.del('adminToken');
+    location.reload();
+  };
+
+  /* -------------------------------- nav --------------------------------- */
+  const NAV = [
+    ['dashboard', 'chart', 'Dashboard'],
+    ['users', 'users', 'Users'],
+    ['sessions', 'key', 'Sessions & tokens'],
+    ['providers', 'plug', 'API providers'],
+    ['models', 'layers', 'Models'],
+    ['plans', 'crown', 'Plans'],
+    ['payments', 'card', 'Payments'],
+    ['chats', 'chat', 'All chats'],
+    ['settings', 'settings', 'Settings'],
+    ['logs', 'shield', 'Logs']
+  ];
+
+  function buildNav() {
+    $('#aNav').innerHTML = NAV.map(
+      ([k, ic, label]) =>
+        `<button data-page="${k}" class="${k === page ? 'active' : ''}">${svgIcon(ic)}<span>${label}</span><span class="n-badge hidden" data-badge="${k}"></span></button>`
+    ).join('');
+    $$('#aNav button').forEach((b) => {
+      b.onclick = () => {
+        go(b.dataset.page);
+        $('#aSide').classList.remove('open');
+      };
+    });
+  }
+
+  $('#aBurger').onclick = () => $('#aSide').classList.toggle('open');
+  $('#refreshBtn').onclick = () => go(page, true);
+
+  function setTitle(t) {
+    $('#pageTitle').textContent = t;
+    $$('#aNav button').forEach((b) => b.classList.toggle('active', b.dataset.page === page));
+  }
+
+  function pendingBadge(n) {
+    const el = document.querySelector('[data-badge="payments"]');
+    if (!el) return;
+    el.textContent = n;
+    el.classList.toggle('hidden', !n);
+  }
+
+  /* ------------------------------ routing ------------------------------- */
+  async function go(p, force) {
+    page = p;
+    const titles = {
+      dashboard: 'Dashboard', users: 'User management', sessions: 'Sessions & tokens',
+      providers: 'API providers', models: 'Models', plans: 'Plans & pricing',
+      payments: 'Payments', chats: 'All chats', settings: 'Settings', logs: 'Activity logs'
+    };
+    setTitle(titles[p] || 'Dashboard');
+    $('#aBody').innerHTML = `<div class="skel" style="height:120px;margin-bottom:14px"></div><div class="skel" style="height:280px"></div>`;
+    try {
+      if (p === 'dashboard') return renderDashboard();
+      if (p === 'users') return renderUsers();
+      if (p === 'sessions') return renderSessions();
+      if (p === 'providers') return renderProviders();
+      if (p === 'models') return renderModels();
+      if (p === 'plans') return renderPlans();
+      if (p === 'payments') return renderPayments();
+      if (p === 'chats') return renderChats();
+      if (p === 'settings') return renderSettings();
+      if (p === 'logs') return renderLogs();
+    } catch (e) {
+      $('#aBody').innerHTML = `<div class="panel"><div class="p-body"><p class="hint">${escapeHtml(e.message)}</p>
+        <button class="btn btn-primary btn-sm" onclick="location.reload()">Reload</button></div></div>`;
+    }
+  }
+
+  /* ------------------------------ dashboard ----------------------------- */
+  async function renderDashboard() {
+    const d = await adminApi('/stats');
+    cache.stats = d;
+    const t = d.totals;
+    pendingBadge(t.pendingPayments);
+    $('#dbBadge').innerHTML = `<span class="dot ${t.firebaseOk ? '' : 'warn'}"></span>${escapeHtml(t.dbBackend)}`;
+    const maxUsers = Math.max(1, ...d.series.map((s) => s.users));
+    const maxRev = Math.max(1, ...d.series.map((s) => s.revenue));
+
+    $('#aBody').innerHTML = `
+      <div class="grid g4" style="margin-bottom:14px">
+        <div class="kpi"><span class="k-ico">${svgIcon('users')}</span><div class="k-l">Total users</div><div class="k-v">${num(t.users)}</div><div class="k-s">+${t.newUsers24h} in 24h</div></div>
+        <div class="kpi ok"><span class="k-ico">${svgIcon('chat')}</span><div class="k-l">Messages</div><div class="k-v">${num(t.messages)}</div><div class="k-s">${num(t.chats)} chats</div></div>
+        <div class="kpi gold"><span class="k-ico">${svgIcon('coins')}</span><div class="k-l">Tokens spent</div><div class="k-v">${num(t.tokensSpent)}</div><div class="k-s">${num(t.tokensIssued)} issued</div></div>
+        <div class="kpi ${t.pendingPayments ? 'err' : 'ok'}"><span class="k-ico">${svgIcon('card')}</span><div class="k-l">Revenue</div><div class="k-v">${money(t.revenue)}</div><div class="k-s">${t.pendingPayments} pending · ${num(t.paymentsCount)} total</div></div>
+      </div>
+
+      <div class="grid g2" style="margin-bottom:14px">
+        <div class="panel">
+          <div class="p-head"><span class="p-title">New users · last 14 days</span></div>
+          <div class="p-body">
+            <div class="chart">${d.series.map((s) => `<div class="bar" style="height:${Math.max(3, (s.users / maxUsers) * 100)}%" title="${s.day}: ${s.users} users"></div>`).join('')}</div>
+            <div class="chart-x">${d.series.map((s) => `<span>${s.day.slice(3)}</span>`).join('')}</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="p-head"><span class="p-title">Revenue · last 14 days</span></div>
+          <div class="p-body">
+            <div class="chart">${d.series.map((s) => `<div class="bar" style="height:${Math.max(3, (s.revenue / maxRev) * 100)}%;background:linear-gradient(180deg,#f8d98d,#e0a94a)" title="₹${s.revenue}"></div>`).join('')}</div>
+            <div class="chart-x">${d.series.map((s) => `<span>${s.day.slice(3)}</span>`).join('')}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="panel">
+          <div class="p-head"><span class="p-title">Provider pool health</span>
+            <button class="btn btn-ghost btn-xs" style="margin-left:auto" data-go-prov>Manage</button></div>
+          <div class="p-body tight">
+            ${d.providers.length ? d.providers.map(providerRow).join('') : '<p class="hint" style="padding:16px">No providers configured yet.</p>'}
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="p-head"><span class="p-title">Newest users</span>
+            <button class="btn btn-ghost btn-xs" style="margin-left:auto" data-go-users>All users</button></div>
+          <div class="p-body tight">
+            ${d.recentUsers.map((u) => `<div class="prov">
+              <div class="avatar-s">${u.avatar ? `<img src="${escapeAttr(u.avatar)}" />` : escapeHtml((u.name || 'U')[0].toUpperCase())}</div>
+              <div style="min-width:0"><div class="pv-n ellipsis" style="max-width:180px">${escapeHtml(u.name)}</div>
+              <div class="pv-m">${escapeHtml(u.email)}</div></div>
+              <div class="pv-acts"><span class="chipx" style="background:rgba(99,102,241,.16);color:#c7d0ff">${num(u.tokens)} t</span>
+              <span class="mini">${timeAgo(u.createdAt)}</span></div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px">
+        <div class="p-head"><span class="p-title">Recent payments</span>
+          <button class="btn btn-ghost btn-xs" style="margin-left:auto" data-go-pay>Open payments</button></div>
+        <div class="p-body tight">
+          ${d.recentPayments.length ? `<div class="tbl-wrap" style="border:0">
+            <table class="table"><thead><tr><th>User</th><th>Plan</th><th>Amount</th><th>Mode</th><th>Status</th><th>When</th></tr></thead>
+            <tbody>${d.recentPayments.map((p) => `<tr>
+              <td><div class="u-cell"><div><div class="u-n">${escapeHtml(p.userName || '—')}</div><div class="u-e">${escapeHtml(p.userEmail || '')}</div></div></div></td>
+              <td>${escapeHtml(p.planName)}</td><td>${money(p.amount)}</td><td>${escapeHtml(p.mode)}</td>
+              <td>${statusChip(p.status)}</td><td class="mini">${timeAgo(p.createdAt)}</td></tr>`).join('')}</tbody></table></div>`
+            : '<p class="hint" style="padding:16px">No payments yet.</p>'}
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px">
+        <div class="p-head"><span class="p-title">System</span></div>
+        <div class="p-body">
+          <div class="form-grid">
+            <div class="f-row"><label>Storage backend</label><div class="mono small">${escapeHtml(t.dbBackend)} ${t.firebaseOk ? '✓ connected' : '⚠ fallback'}</div></div>
+            <div class="f-row"><label>Uptime</label><div class="mono small">${Math.floor(t.uptime / 3600)}h ${Math.floor((t.uptime % 3600) / 60)}m</div></div>
+            <div class="f-row"><label>Providers live</label><div class="mono small">${t.providersLive} / ${t.providers}</div></div>
+            <div class="f-row"><label>Last storage error</label><div class="mono small">${escapeHtml(t.lastStoreError || 'none')}</div></div>
+          </div>
+          <div class="row" style="margin-top:14px;gap:8px">
+            <button class="btn btn-ghost btn-sm" id="flushBtn">${svgIcon('refresh')} Force save to storage</button>
+          </div>
+        </div>
+      </div>`;
+
+    $$('[data-go-prov]').forEach((b) => (b.onclick = () => go('providers')));
+    $$('[data-go-users]').forEach((b) => (b.onclick = () => go('users')));
+    $$('[data-go-pay]').forEach((b) => (b.onclick = () => go('payments')));
+    $('#flushBtn').onclick = async (e) => {
+      APP.busy(e.currentTarget, true);
+      try {
+        const out = await adminApi('/flush', { method: 'POST', body: {} });
+        toast(out.firebaseOk ? 'Saved to Firebase.' : 'Saved locally (Firebase unreachable).', out.firebaseOk ? 'ok' : 'warn');
+      } catch (err) {
+        toast(err.message, 'err');
+      }
+      APP.busy(e.currentTarget, false);
+    };
+  }
+
+  function providerRow(p) {
+    const pct = p.requestLimit > 0 ? Math.min(100, (p.requestsUsed / p.requestLimit) * 100) : 0;
+    return `<div class="prov">
+      <span class="dot ${p.usable ? '' : p.coolingDown ? 'warn' : 'err'}"></span>
+      <div style="min-width:0;flex:1">
+        <div class="pv-n">${escapeHtml(p.name)} <span class="mini">· ${escapeHtml(p.model)}</span></div>
+        <div class="pv-m">${p.requestsUsed}${p.requestLimit > 0 ? '/' + p.requestLimit : ''} requests ${p.errors ? '· ' + p.errors + ' errors' : ''}</div>
+      </div>
+      <div class="pv-bar"><i style="width:${pct}%;background:${pct > 85 ? '#fb7185' : 'var(--grad)'}"></i></div>
+      <span class="chipx" style="background:rgba(255,255,255,.07);color:${p.usable ? '#6ee7b7' : '#ffb4c0'}">${p.usable ? 'live' : p.enabled ? 'cooling' : 'off'}</span>
+    </div>`;
+  }
+
+  function statusChip(s) {
+    const map = {
+      success: ['badge-ok', 'active'],
+      pending: ['badge-warn', 'pending'],
+      rejected: ['badge-err', 'rejected'],
+      created: ['badge', 'created']
+    };
+    const [cls, label] = map[s] || ['badge', s];
+    return `<span class="badge ${cls}">${escapeHtml(label)}</span>`;
+  }
+
+  /* -------------------------------- users ------------------------------- */
+  async function renderUsers(q, status) {
+    const d = await adminApi('/users?q=' + encodeURIComponent(q || '') + '&status=' + encodeURIComponent(status || ''));
+    cache.users = d.users;
+    $('#aBody').innerHTML = `
+      <div class="toolbar">
+        <input class="search" id="uSearch" placeholder="Search by name or email…" value="${escapeAttr(q || '')}" />
+        <select class="input input-sm" id="uStatus" style="width:auto">
+          <option value="">All statuses</option>
+          <option value="active" ${status === 'active' ? 'selected' : ''}>Active</option>
+          <option value="blocked" ${status === 'blocked' ? 'selected' : ''}>Blocked</option>
+        </select>
+        <button class="btn btn-primary btn-sm" id="grantAll">Grant tokens</button>
+        <span class="mini">${d.total} users</span>
+      </div>
+      <div class="panel"><div class="p-body tight"><div class="tbl-wrap" style="border:0">
+        <table class="table">
+          <thead><tr><th>User</th><th>Plan</th><th>Tokens</th><th>Msgs</th><th>Spent</th><th>Status</th><th>Joined</th><th style="text-align:right">Actions</th></tr></thead>
+          <tbody>
+            ${d.users.map((u) => `<tr data-u="${u.id}">
+              <td><div class="u-cell">
+                <div class="avatar-s">${u.avatar ? `<img src="${escapeAttr(u.avatar)}" />` : escapeHtml((u.name || 'U')[0].toUpperCase())}</div>
+                <div><div class="u-n">${escapeHtml(u.name)}</div><div class="u-e">${escapeHtml(u.email)}</div></div>
+              </div></td>
+              <td><span class="chipx" style="background:rgba(245,199,106,.16);color:#f5c76a">${escapeHtml(u.plan)}</span></td>
+              <td><b>${num(u.tokens)}</b></td>
+              <td class="mini">${num(u.messages)}</td>
+              <td class="mini">${money(u.totalSpent)}</td>
+              <td>${u.status === 'blocked' ? '<span class="badge badge-err">blocked</span>' : '<span class="badge badge-ok">active</span>'}</td>
+              <td class="mini">${timeAgo(u.createdAt)}</td>
+              <td><div class="actions" style="justify-content:flex-end">
+                <button class="btn btn-ghost btn-xs" data-edit="${u.id}">Edit</button>
+                <button class="btn btn-ghost btn-xs" data-tokens="${u.id}">Tokens</button>
+                <button class="btn btn-ghost btn-xs" data-bounce="${u.id}">Bounce</button>
+                <button class="btn btn-danger btn-xs" data-del="${u.id}">Del</button>
+              </div></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div></div></div>`;
+
+    $('#uSearch').oninput = APP.debounce((e) => renderUsers(e.target.value, $('#uStatus').value), 300);
+    $('#uStatus').onchange = (e) => renderUsers($('#uSearch').value, e.target.value);
+
+    $('#grantAll').onclick = () => {
+      modal({
+        title: 'Grant tokens to every user',
+        body: `<div class="field"><label class="label">Tokens per user</label><input class="input" id="gtAmt" type="number" value="1000" /></div>
+               <p class="hint">This adds the amount to all ${d.total} users instantly.</p>`,
+        footer: `<button class="btn btn-ghost" data-c>Cancel</button><button class="btn btn-primary" data-ok>Grant</button>`,
+        onOpen(el, close) {
+          el.querySelector('[data-c]').onclick = close;
+          el.querySelector('[data-ok]').onclick = async () => {
+            const amt = Number(el.querySelector('#gtAmt').value) || 0;
+            if (!amt) return toast('Enter an amount.', 'err');
+            const ok = await confirmBox(`Add ${amt} tokens to all ${d.total} users?`, { ok: 'Yes, grant' });
+            if (!ok) return;
+            let done = 0;
+            for (const u of d.users) {
+              try {
+                await adminApi('/users/' + u.id, { method: 'PATCH', body: { addTokens: amt } });
+                done++;
+              } catch {}
+            }
+            close();
+            toast(`Granted to ${done} users.`, 'ok');
+            renderUsers();
+          };
+        }
+      });
+    };
+
+    $$('[data-edit]').forEach((b) => (b.onclick = () => editUser(b.dataset.edit)));
+    $$('[data-tokens]').forEach((b) => (b.onclick = () => tokenModal(b.dataset.tokens)));
+    $$('[data-bounce]').forEach((b) => {
+      b.onclick = async () => {
+        const u = d.users.find((x) => x.id === b.dataset.bounce);
+        const ok = await confirmBox(`Force logout ${u.email} on all devices?`, { ok: 'Bounce sessions', danger: true });
+        if (!ok) return;
+        try {
+          const out = await adminApi('/users/' + u.id + '/logout', { method: 'POST', body: {} });
+          toast(`${out.revoked} session(s) revoked.`, 'ok');
+        } catch (e) {
+          toast(e.message, 'err');
+        }
+      };
+    });
+    $$('[data-del]').forEach((b) => {
+      b.onclick = async () => {
+        const u = d.users.find((x) => x.id === b.dataset.del);
+        const ok = await confirmBox(`Delete ${u.email}? All chats and sessions go with it.`, { ok: 'Delete user', danger: true });
+        if (!ok) return;
+        try {
+          await adminApi('/users/' + u.id, { method: 'DELETE' });
+          toast('User deleted.', 'ok');
+          renderUsers($('#uSearch').value, $('#uStatus').value);
+        } catch (e) {
+          toast(e.message, 'err');
+        }
+      };
+    });
+  }
+
+  async function editUser(id) {
+    if (!cache.plans) {
+      try {
+        cache.plans = (await adminApi('/plans')).plans;
+      } catch {}
+    }
+    const d = await adminApi('/users/' + id);
+    const u = d.user;
+    modal({
+      title: 'Edit ' + escapeHtml(u.email),
+      wide: true,
+      body: `
+        <div class="form-grid">
+          <div class="f-row"><label>Name</label><input class="input" id="eName" value="${escapeAttr(u.name)}" /></div>
+          <div class="f-row"><label>Email</label><input class="input" id="eEmail" value="${escapeAttr(u.email)}" /></div>
+          <div class="f-row"><label>New password</label><input class="input" id="ePass" type="password" placeholder="Leave empty to keep" /></div>
+          <div class="f-row"><label>Status</label><select class="input" id="eStatus">
+            <option value="active" ${u.status !== 'blocked' ? 'selected' : ''}>Active</option>
+            <option value="blocked" ${u.status === 'blocked' ? 'selected' : ''}>Blocked</option></select></div>
+          <div class="f-row"><label>Plan</label><select class="input" id="ePlan">
+            ${(cache.plans || []).map((p) => `<option value="${p.id}" ${p.id === u.plan ? 'selected' : ''}>${escapeHtml(p.name)}</option>`).join('') || '<option value="free">Free</option>'}
+          </select></div>
+          <div class="f-row"><label>Tokens (absolute)</label><input class="input" id="eTokens" type="number" value="${u.tokens}" /></div>
+        </div>
+        <div class="divider"></div>
+        <p class="hint"><b>${d.sessions.filter((s) => s.active).length}</b> active sessions · <b>${d.chats.length}</b> chats · <b>${d.payments.length}</b> payments</p>
+        <div class="row" style="margin-top:12px;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-sm" id="editBounce">Force logout all devices</button>
+          <button class="btn btn-ghost btn-sm" id="editResetDaily">Reset daily counter</button>
+        </div>`,
+      footer: `<button class="btn btn-ghost" data-c>Cancel</button><button class="btn btn-primary" data-save>Save changes</button>`,
+      onOpen(el, close) {
+        el.querySelector('[data-c]').onclick = close;
+        el.querySelector('#editBounce').onclick = async () => {
+          await adminApi('/users/' + id + '/logout', { method: 'POST', body: {} });
+          toast('All sessions revoked.', 'ok');
+        };
+        el.querySelector('#editResetDaily').onclick = async () => {
+          await adminApi('/users/' + id, { method: 'PATCH', body: { resetDaily: true } });
+          toast('Daily counter reset.', 'ok');
+        };
+        el.querySelector('[data-save]').onclick = async (ev) => {
+          const btn = ev.currentTarget;
+          APP.busy(btn, true);
+          try {
+            await adminApi('/users/' + id, {
+              method: 'PATCH',
+              body: {
+                name: el.querySelector('#eName').value,
+                email: el.querySelector('#eEmail').value,
+                status: el.querySelector('#eStatus').value,
+                plan: el.querySelector('#ePlan').value,
+                tokens: el.querySelector('#eTokens').value,
+                password: el.querySelector('#ePass').value || undefined
+              }
+            });
+            toast('User updated.', 'ok');
+            close();
+            renderUsers($('#uSearch') ? $('#uSearch').value : '', $('#uStatus') ? $('#uStatus').value : '');
+          } catch (e) {
+            toast(e.message, 'err');
+            APP.busy(btn, false);
+          }
+        };
+      }
+    });
+  }
+
+  function tokenModal(id) {
+    modal({
+      title: 'Adjust tokens',
+      body: `<div class="field"><label class="label">Amount (use negative to subtract)</label>
+              <input class="input" id="tAmt" type="number" value="500" /></div>
+             <div class="row" style="gap:6px;flex-wrap:wrap">
+               ${[100, 500, 1000, 5000, -100].map((n) => `<button class="btn btn-ghost btn-xs" data-q="${n}">${n > 0 ? '+' : ''}${n}</button>`).join('')}
+             </div>`,
+      footer: `<button class="btn btn-ghost" data-c>Cancel</button><button class="btn btn-primary" data-ok>Apply</button>`,
+      onOpen(el, close) {
+        el.querySelectorAll('[data-q]').forEach((b) => (b.onclick = () => (el.querySelector('#tAmt').value = b.dataset.q)));
+        el.querySelector('[data-c]').onclick = close;
+        el.querySelector('[data-ok]').onclick = async () => {
+          const amt = Number(el.querySelector('#tAmt').value) || 0;
+          try {
+            await adminApi('/users/' + id, { method: 'PATCH', body: { addTokens: amt } });
+            toast(`${amt > 0 ? 'Added' : 'Removed'} ${Math.abs(amt)} tokens.`, 'ok');
+            close();
+            renderUsers($('#uSearch') ? $('#uSearch').value : '', $('#uStatus') ? $('#uStatus').value : '');
+          } catch (e) {
+            toast(e.message, 'err');
+          }
+        };
+      }
+    });
+  }
+
+  /* ------------------------------ sessions ------------------------------ */
+  async function renderSessions() {
+    const d = await adminApi('/sessions');
+    $('#aBody').innerHTML = `
+      <div class="toolbar"><span class="p-title">Live sessions</span><span class="mini">${d.sessions.length} active</span></div>
+      <div class="panel"><div class="p-body tight"><div class="tbl-wrap" style="border:0">
+        <table class="table"><thead><tr><th>User</th><th>Token</th><th>IP</th><th>Device</th><th>Started</th><th>Last seen</th><th></th></tr></thead>
+        <tbody>${d.sessions.map((s) => `<tr>
+          <td><div class="u-cell"><div><div class="u-n">${escapeHtml(s.user ? s.user.name : 'unknown')}</div>
+            <div class="u-e">${escapeHtml(s.user ? s.user.email : '')}</div></div></div></td>
+          <td class="mono mini">${escapeHtml(s.tokenHash)}</td>
+          <td class="mono mini">${escapeHtml(s.ip || '—')}</td>
+          <td class="mini ellipsis" style="max-width:220px">${escapeHtml((s.ua || '').slice(0, 70))}</td>
+          <td class="mini">${timeAgo(s.createdAt)}</td>
+          <td class="mini">${timeAgo(s.lastSeen)}</td>
+          <td><button class="btn btn-danger btn-xs" data-kill="${s.id}">Revoke</button></td>
+        </tr>`).join('') || '<tr><td colspan="7" class="mini" style="padding:18px">No active sessions.</td></tr>'}</tbody></table>
+      </div></div></div>`;
+    $$('[data-kill]').forEach((b) => {
+      b.onclick = async () => {
+        await adminApi('/sessions/' + b.dataset.kill, { method: 'DELETE' });
+        toast('Session revoked — that user is signed out on that device.', 'ok');
+        renderSessions();
+      };
+    });
+  }
+
+  /* ------------------------------ providers ----------------------------- */
+  async function renderProviders() {
+    const d = await adminApi('/providers');
+    cache.providers = d.providers;
+    $('#aBody').innerHTML = `
+      <div class="toolbar">
+        <span class="p-title">API key pool</span>
+        <span class="mini">${d.providers.filter((p) => p.usable).length} of ${d.providers.length} live</span>
+        <button class="btn btn-primary btn-sm" style="margin-left:auto" id="addProv">+ Add provider</button>
+      </div>
+      <p class="hint" style="margin-bottom:14px">
+        Users never see these keys. Each key has a request budget — when it is used up the router parks it and moves on automatically.
+      </p>
+      <div class="panel"><div class="p-body tight">
+        ${d.providers.length ? d.providers.map((p) => `
+          <div class="prov">
+            <span class="dot ${p.usable ? '' : p.enabled ? 'warn' : 'err'}"></span>
+            <div style="flex:1;min-width:170px">
+              <div class="pv-n">${escapeHtml(p.name)} ${p.enabled ? '' : '<span class="badge badge-err" style="margin-left:5px">off</span>'}</div>
+              <div class="pv-m">${escapeHtml(p.type || 'openai')} · ${escapeHtml(p.model)} · ${escapeHtml(p.baseUrl.replace(/^https?:\/\//, ''))}</div>
+              <div class="pv-m">key: ${p.keySet ? escapeHtml(p.apiKey) : '<span style="color:#fb7185">not set</span>'}</div>
+            </div>
+            <div style="min-width:120px">
+              <div class="pv-m">${p.requestsUsed}${p.requestLimit > 0 ? ' / ' + p.requestLimit : ' / ∞'} requests</div>
+              <div class="pv-bar" style="width:100%"><i style="width:${p.requestLimit > 0 ? Math.min(100, (p.requestsUsed / p.requestLimit) * 100) : 0}%;background:${p.requestsUsed / (p.requestLimit || 1) > 0.85 ? '#fb7185' : 'var(--grad)'}"></i></div>
+              <div class="pv-m">${p.remaining >= 0 ? p.remaining + ' left' : 'unlimited'}</div>
+            </div>
+            <div class="pv-acts">
+              <button class="btn btn-ghost btn-xs" data-test="${p.id}">Test</button>
+              <button class="btn btn-ghost btn-xs" data-toggle="${p.id}">${p.enabled ? 'Disable' : 'Enable'}</button>
+              <button class="btn btn-ghost btn-xs" data-reset="${p.id}">Reset</button>
+              <button class="btn btn-ghost btn-xs" data-editp="${p.id}">Edit</button>
+              <button class="btn btn-danger btn-xs" data-delp="${p.id}">Del</button>
+            </div>
+          </div>`).join('') : '<p class="hint" style="padding:18px">No providers yet. Add your first API key to start serving chats.</p>'}
+      </div></div>`;
+
+    $('#addProv').onclick = () => providerForm(null);
+    $$('[data-editp]').forEach((b) => (b.onclick = () => providerForm(d.providers.find((p) => p.id === b.dataset.editp))));
+    $$('[data-toggle]').forEach((b) => {
+      b.onclick = async () => {
+        const p = d.providers.find((x) => x.id === b.dataset.toggle);
+        await adminApi('/providers/' + p.id, { method: 'PATCH', body: { enabled: !p.enabled } });
+        renderProviders();
+      };
+    });
+    $$('[data-reset]').forEach((b) => {
+      b.onclick = async () => {
+        await adminApi('/providers/' + b.dataset.reset, { method: 'PATCH', body: { resetCounter: true, enabled: true } });
+        toast('Counter reset and provider re-enabled.', 'ok');
+        renderProviders();
+      };
+    });
+    $$('[data-delp]').forEach((b) => {
+      b.onclick = async () => {
+        const ok = await confirmBox('Delete this provider permanently?', { ok: 'Delete', danger: true });
+        if (!ok) return;
+        await adminApi('/providers/' + b.dataset.delp, { method: 'DELETE' });
+        toast('Provider deleted.', 'ok');
+        renderProviders();
+      };
+    });
+    $$('[data-test]').forEach((b) => {
+      b.onclick = async () => {
+        APP.busy(b, true);
+        try {
+          const out = await adminApi('/providers/' + b.dataset.test + '/test', { method: 'POST', body: {} });
+          toast(out.ok ? `Live ✓ ${out.sample || ''}` : `Failed: ${out.message || out.status}`, out.ok ? 'ok' : 'err', 6000);
+        } catch (e) {
+          toast(e.message, 'err');
+        }
+        APP.busy(b, false);
+      };
+    });
+  }
+
+  function providerForm(p) {
+    const isNew = !p;
+    const types = ['openai', 'anthropic', 'gemini'];
+    modal({
+      title: isNew ? 'Add API provider' : 'Edit provider',
+      wide: true,
+      body: `
+        <div class="form-grid">
+          <div class="f-row"><label>Display name</label><input class="input" id="pName" value="${escapeAttr(p?.name || '')}" placeholder="Primary OpenAI key" /></div>
+          <div class="f-row"><label>Protocol</label><select class="input" id="pType">
+            ${types.map((t) => `<option value="${t}" ${p && (p.type || 'openai') === t ? 'selected' : ''}>${t}</option>`).join('')}
+          </select></div>
+          <div class="f-row full"><label>Base URL</label><input class="input" id="pUrl" value="${escapeAttr(p?.baseUrl || 'https://api.openai.com/v1')}" placeholder="https://api.openai.com/v1" /></div>
+          <div class="f-row full"><label>API key ${p && p.keySet ? '(leave empty to keep existing)' : ''}</label>
+            <input class="input" id="pKey" type="text" placeholder="${p && p.keySet ? escapeAttr(p.apiKey) : 'sk-...'}" /></div>
+          <div class="f-row"><label>Model name</label><input class="input" id="pModel" value="${escapeAttr(p?.model || 'gpt-4o-mini')}" /></div>
+          <div class="f-row"><label>Request limit (0 = unlimited)</label><input class="input" id="pLimit" type="number" value="${p ? p.requestLimit : 10}" /></div>
+          <div class="f-row"><label>Timeout (ms)</label><input class="input" id="pTimeout" type="number" value="${p ? p.timeoutMs || 120000 : 120000}" /></div>
+          <div class="f-row"><label>Order</label><input class="input" id="pOrder" type="number" value="${p ? p.order || 1 : 1}" /></div>
+          <div class="f-row full"><label>Auto-park when the limit is reached</label>
+            <label class="checkline"><input type="checkbox" id="pAuto" ${!p || p.autoDisable !== false ? 'checked' : ''} /> Disable this key automatically and switch to the next one</label></div>
+        </div>
+        <div class="divider"></div>
+        <p class="hint">Supports any OpenAI-compatible endpoint (OpenAI, DeepSeek, Groq, OpenRouter, Together, xAI) plus native Anthropic and Google Gemini.</p>`,
+      footer: `<button class="btn btn-ghost" data-c>Cancel</button><button class="btn btn-primary" data-save>${isNew ? 'Add provider' : 'Save changes'}</button>`,
+      onOpen(el, close) {
+        el.querySelector('[data-c]').onclick = close;
+        el.querySelector('[data-save]').onclick = async (ev) => {
+          const btn = ev.currentTarget;
+          const body = {
+            name: el.querySelector('#pName').value,
+            type: el.querySelector('#pType').value,
+            baseUrl: el.querySelector('#pUrl').value,
+            apiKey: el.querySelector('#pKey').value,
+            model: el.querySelector('#pModel').value,
+            requestLimit: Number(el.querySelector('#pLimit').value),
+            timeoutMs: Number(el.querySelector('#pTimeout').value),
+            order: Number(el.querySelector('#pOrder').value),
+            autoDisable: el.querySelector('#pAuto').checked
+          };
+          if (!body.baseUrl) return toast('Base URL is required.', 'err');
+          APP.busy(btn, true);
+          try {
+            if (isNew) await adminApi('/providers', { body });
+            else await adminApi('/providers/' + p.id, { method: 'PATCH', body });
+            toast('Saved.', 'ok');
+            close();
+            renderProviders();
+          } catch (e) {
+            toast(e.message, 'err');
+            APP.busy(btn, false);
+          }
+        };
+      }
+    });
+  }
+
+  /* -------------------------------- plans ------------------------------- */
+  async function renderPlans() {
+    const d = await adminApi('/plans');
+    cache.plans = d.plans;
+    $('#aBody').innerHTML = `
+      <div class="toolbar"><span class="p-title">Plans</span>
+        <button class="btn btn-primary btn-sm" style="margin-left:auto" id="addPlan">+ New plan</button></div>
+      <div class="grid g2">
+        ${d.plans.map((p) => `<div class="panel">
+          <div class="p-head">
+            <div><div class="p-title">${escapeHtml(p.name)}</div>
+              <div class="mini">${money(p.price)} · ${num(p.tokens)} tokens · ${p.daily} msgs/day</div></div>
+            <div class="row" style="margin-left:auto;gap:5px">
+              ${p.active ? '<span class="badge badge-ok">live</span>' : '<span class="badge badge-err">hidden</span>'}
+              ${p.popular ? '<span class="badge badge-gold">popular</span>' : ''}
+            </div>
+          </div>
+          <div class="p-body">
+            <ul class="pc-perks" style="list-style:none;padding:0;margin:0 0 12px;display:flex;flex-direction:column;gap:6px">
+              ${(p.perks || []).map((x) => `<li class="mini" style="display:flex;gap:6px">${svgIcon('check')}<span>${escapeHtml(x)}</span></li>`).join('')}
+            </ul>
+            <div class="row" style="gap:6px">
+              <button class="btn btn-ghost btn-xs" data-ep="${p.id}">Edit</button>
+              <button class="btn btn-ghost btn-xs" data-tp="${p.id}">${p.active ? 'Hide' : 'Publish'}</button>
+              <button class="btn btn-danger btn-xs" data-dp="${p.id}">Delete</button>
+            </div>
+          </div>
+        </div>`).join('')}
+      </div>`;
+
+    $('#addPlan').onclick = () => planForm(null);
+    $$('[data-ep]').forEach((b) => (b.onclick = () => planForm(d.plans.find((p) => p.id === b.dataset.ep))));
+    $$('[data-tp]').forEach((b) => {
+      b.onclick = async () => {
+        const p = d.plans.find((x) => x.id === b.dataset.tp);
+        await adminApi('/plans/' + p.id, { method: 'PATCH', body: { active: !p.active } });
+        renderPlans();
+      };
+    });
+    $$('[data-dp]').forEach((b) => {
+      b.onclick = async () => {
+        const ok = await confirmBox('Delete this plan?', { ok: 'Delete', danger: true });
+        if (!ok) return;
+        try {
+          await adminApi('/plans/' + b.dataset.dp, { method: 'DELETE' });
+          renderPlans();
+        } catch (e) {
+          toast(e.message, 'err');
+        }
+      };
+    });
+  }
+
+  function planForm(p) {
+    const isNew = !p;
+    modal({
+      title: isNew ? 'New plan' : 'Edit plan',
+      body: `
+        <div class="form-grid">
+          <div class="f-row"><label>Name</label><input class="input" id="plName" value="${escapeAttr(p?.name || '')}" /></div>
+          <div class="f-row"><label>Price (₹)</label><input class="input" id="plPrice" type="number" value="${p ? p.price : 0}" /></div>
+          <div class="f-row"><label>Tokens included</label><input class="input" id="plTokens" type="number" value="${p ? p.tokens : 100000}" /></div>
+          <div class="f-row"><label>Daily message limit</label><input class="input" id="plDaily" type="number" value="${p ? p.daily : 100}" /></div>
+          <div class="f-row full"><label>Perks (one per line)</label><textarea class="input" id="plPerks" rows="4">${escapeAttr((p?.perks || []).join('\n'))}</textarea></div>
+          <div class="f-row"><label>Order</label><input class="input" id="plOrder" type="number" value="${p ? p.order || 1 : 1}" /></div>
+          <div class="f-row"><label>Flags</label>
+            <label class="checkline"><input type="checkbox" id="plPopular" ${p?.popular ? 'checked' : ''} /> Most popular</label>
+            <label class="checkline"><input type="checkbox" id="plActive" ${!p || p.active !== false ? 'checked' : ''} /> Published</label>
+          </div>
+        </div>`,
+      footer: `<button class="btn btn-ghost" data-c>Cancel</button><button class="btn btn-primary" data-save>Save</button>`,
+      onOpen(el, close) {
+        el.querySelector('[data-c]').onclick = close;
+        el.querySelector('[data-save]').onclick = async (ev) => {
+          const body = {
+            name: el.querySelector('#plName').value,
+            price: Number(el.querySelector('#plPrice').value),
+            tokens: Number(el.querySelector('#plTokens').value),
+            daily: Number(el.querySelector('#plDaily').value),
+            perks: el.querySelector('#plPerks').value.split('\n').map((s) => s.trim()).filter(Boolean),
+            order: Number(el.querySelector('#plOrder').value),
+            popular: el.querySelector('#plPopular').checked,
+            active: el.querySelector('#plActive').checked
+          };
+          if (!body.name) return toast('Name required.', 'err');
+          APP.busy(ev.currentTarget, true);
+          try {
+            if (isNew) await adminApi('/plans', { body });
+            else await adminApi('/plans/' + p.id, { method: 'PATCH', body });
+            toast('Plan saved.', 'ok');
+            close();
+            renderPlans();
+          } catch (e) {
+            toast(e.message, 'err');
+            APP.busy(ev.currentTarget, false);
+          }
+        };
+      }
+    });
+  }
+
+  /* ------------------------------- models ------------------------------- */
+  async function renderModels() {
+    const d = await adminApi('/models');
+    $('#aBody').innerHTML = `
+      <div class="toolbar"><span class="p-title">Public models</span>
+        <span class="mini">What users see in the model switcher</span>
+        <button class="btn btn-primary btn-sm" style="margin-left:auto" id="addModel">+ New model</button></div>
+      <div class="panel"><div class="p-body tight"><div class="tbl-wrap" style="border:0">
+        <table class="table"><thead><tr><th>Model</th><th>Vendor</th><th>Tier</th><th>Upstream override</th><th>State</th><th></th></tr></thead>
+        <tbody>${d.models.map((m) => `<tr>
+          <td><div class="u-cell">
+            <span style="color:${escapeAttr(m.color)};display:grid;place-items:center;width:26px;height:26px">${svgIcon(m.icon)}</span>
+            <div><div class="u-n">${escapeHtml(m.name)}</div><div class="u-e ellipsis" style="max-width:260px">${escapeHtml(m.desc || '')}</div></div>
+          </div></td>
+          <td class="mini">${escapeHtml(m.vendor)}</td>
+          <td><span class="chipx" style="background:rgba(99,102,241,.16);color:#c7d0ff">${escapeHtml(m.tier)}</span></td>
+          <td class="mono mini">${escapeHtml(m.providerModel || '—')}</td>
+          <td>${m.enabled !== false ? '<span class="badge badge-ok">live</span>' : '<span class="badge badge-err">off</span>'}</td>
+          <td><div class="actions">
+            <button class="btn btn-ghost btn-xs" data-em="${m.id}">Edit</button>
+            <button class="btn btn-ghost btn-xs" data-tm="${m.id}">${m.enabled !== false ? 'Hide' : 'Show'}</button>
+            <button class="btn btn-danger btn-xs" data-dm="${m.id}">Del</button>
+          </div></td>
+        </tr>`).join('')}</tbody></table>
+      </div></div></div>`;
+
+    $('#addModel').onclick = () => modelForm(null);
+    $$('[data-em]').forEach((b) => (b.onclick = () => modelForm(d.models.find((m) => m.id === b.dataset.em))));
+    $$('[data-tm]').forEach((b) => {
+      b.onclick = async () => {
+        const m = d.models.find((x) => x.id === b.dataset.tm);
+        await adminApi('/models/' + m.id, { method: 'PATCH', body: { enabled: m.enabled === false } });
+        renderModels();
+      };
+    });
+    $$('[data-dm]').forEach((b) => {
+      b.onclick = async () => {
+        const ok = await confirmBox('Delete this model from the switcher?', { ok: 'Delete', danger: true });
+        if (!ok) return;
+        await adminApi('/models/' + b.dataset.dm, { method: 'DELETE' });
+        renderModels();
+      };
+    });
+  }
+
+  function modelForm(m) {
+    const isNew = !m;
+    const icons = ['claude', 'openai', 'gemini', 'deepseek', 'llama', 'grok', 'mistral', 'qwen', 'meta', 'cohere', 'perplexity', 'spark'];
+    modal({
+      title: isNew ? 'New model' : 'Edit model',
+      body: `
+        <div class="form-grid">
+          <div class="f-row"><label>Display name</label><input class="input" id="mName" value="${escapeAttr(m?.name || '')}" /></div>
+          <div class="f-row"><label>Vendor</label><input class="input" id="mVendor" value="${escapeAttr(m?.vendor || 'Custom')}" /></div>
+          <div class="f-row"><label>Icon</label><select class="input" id="mIcon">
+            ${icons.map((i) => `<option value="${i}" ${m && m.icon === i ? 'selected' : ''}>${i}</option>`).join('')}</select></div>
+          <div class="f-row"><label>Brand colour</label><input class="input" id="mColor" type="color" value="${escapeAttr(m?.color || '#6366f1')}" style="height:44px;padding:4px" /></div>
+          <div class="f-row"><label>Tier label</label><input class="input" id="mTier" value="${escapeAttr(m?.tier || 'Pro')}" /></div>
+          <div class="f-row"><label>Upstream model name (optional)</label><input class="input" id="mProviderModel" value="${escapeAttr(m?.providerModel || '')}" placeholder="claude-3-5-sonnet-20241022" /></div>
+          <div class="f-row full"><label>Short description</label><input class="input" id="mDesc" value="${escapeAttr(m?.desc || '')}" /></div>
+        </div>`,
+      footer: `<button class="btn btn-ghost" data-c>Cancel</button><button class="btn btn-primary" data-save>Save</button>`,
+      onOpen(el, close) {
+        el.querySelector('[data-c]').onclick = close;
+        el.querySelector('[data-save]').onclick = async (ev) => {
+          const body = {
+            name: el.querySelector('#mName').value,
+            vendor: el.querySelector('#mVendor').value,
+            icon: el.querySelector('#mIcon').value,
+            color: el.querySelector('#mColor').value,
+            tier: el.querySelector('#mTier').value,
+            providerModel: el.querySelector('#mProviderModel').value,
+            desc: el.querySelector('#mDesc').value
+          };
+          if (!body.name) return toast('Name required.', 'err');
+          APP.busy(ev.currentTarget, true);
+          try {
+            if (isNew) await adminApi('/models', { body });
+            else await adminApi('/models/' + m.id, { method: 'PATCH', body });
+            toast('Saved.', 'ok');
+            close();
+            renderModels();
+          } catch (e) {
+            toast(e.message, 'err');
+            APP.busy(ev.currentTarget, false);
+          }
+        };
+      }
+    });
+  }
+
+  /* ------------------------------ payments ------------------------------ */
+  async function renderPayments(status) {
+    const d = await adminApi('/payments?status=' + encodeURIComponent(status || ''));
+    pendingBadge(d.payments.filter((p) => p.status === 'pending').length);
+    $('#aBody').innerHTML = `
+      <div class="toolbar">
+        <span class="p-title">Payments</span>
+        <div class="pill-tabs" id="payTabs">
+          ${['', 'pending', 'success', 'rejected'].map((s) => `<button data-s="${s}" class="${(status || '') === s ? 'active' : ''}">${s || 'All'}</button>`).join('')}
+        </div>
+        <span class="mini" style="margin-left:auto">₹${d.totals.revenue} collected · ${d.totals.pending} pending</span>
+      </div>
+      <div class="panel"><div class="p-body tight"><div class="tbl-wrap" style="border:0">
+        <table class="table"><thead><tr><th>User</th><th>Plan</th><th>Amount</th><th>Mode</th><th>UTR / Ref</th><th>Proof</th><th>Status</th><th>When</th><th></th></tr></thead>
+        <tbody>${d.payments.map((p) => `<tr>
+          <td><div class="u-cell"><div><div class="u-n">${escapeHtml(p.userName || '—')}</div><div class="u-e">${escapeHtml(p.userEmail || '')}</div></div></div></td>
+          <td>${escapeHtml(p.planName)}</td>
+          <td><b>${money(p.amount)}</b></td>
+          <td class="mini">${escapeHtml(p.mode)}</td>
+          <td class="mono mini">${escapeHtml(p.utr || '—')}</td>
+          <td>${p.screenshot ? `<button class="btn btn-ghost btn-xs" data-shot="${p.id}">View</button>` : '<span class="mini">—</span>'}</td>
+          <td>${statusChip(p.status)}</td>
+          <td class="mini">${timeAgo(p.createdAt)}</td>
+          <td><div class="actions">
+            ${p.status !== 'success' ? `<button class="btn btn-ok btn-xs" data-approve="${p.id}">Approve</button>` : ''}
+            ${p.status === 'pending' ? `<button class="btn btn-danger btn-xs" data-reject="${p.id}">Reject</button>` : ''}
+            <button class="btn btn-ghost btn-xs" data-delpay="${p.id}">Del</button>
+          </div></td>
+        </tr>`).join('') || '<tr><td colspan="9" class="mini" style="padding:20px">No payments.</td></tr>'}</tbody></table>
+      </div></div></div>`;
+
+    $$('#payTabs button').forEach((b) => (b.onclick = () => renderPayments(b.dataset.s)));
+
+    $$('[data-approve]').forEach((b) => {
+      b.onclick = async () => {
+        const ok = await confirmBox('Approve this payment and activate the plan?', { ok: 'Approve & activate' });
+        if (!ok) return;
+        try {
+          await adminApi('/payments/' + b.dataset.approve + '/approve', { method: 'POST', body: {} });
+          toast('Payment approved — plan activated.', 'ok');
+          renderPayments(status);
+        } catch (e) {
+          toast(e.message, 'err');
+        }
+      };
+    });
+    $$('[data-reject]').forEach((b) => {
+      b.onclick = async () => {
+        const ok = await confirmBox('Reject this payment?', { ok: 'Reject', danger: true });
+        if (!ok) return;
+        await adminApi('/payments/' + b.dataset.reject + '/reject', { method: 'POST', body: { reason: 'Not verified' } });
+        toast('Payment rejected.', 'ok');
+        renderPayments(status);
+      };
+    });
+    $$('[data-delpay]').forEach((b) => {
+      b.onclick = async () => {
+        const ok = await confirmBox('Delete this payment record?', { ok: 'Delete', danger: true });
+        if (!ok) return;
+        await adminApi('/payments/' + b.dataset.delpay, { method: 'DELETE' });
+        renderPayments(status);
+      };
+    });
+    $$('[data-shot]').forEach((b) => {
+      b.onclick = () => {
+        const p = d.payments.find((x) => x.id === b.dataset.shot);
+        modal({
+          title: 'Payment proof',
+          wide: true,
+          body: `<img src="${escapeAttr(p.screenshot)}" style="width:100%;border-radius:12px" alt="proof" />
+                 <p class="hint" style="margin-top:10px">UTR: ${escapeHtml(p.utr || '—')} · ${money(p.amount)} · ${escapeHtml(p.planName)}</p>`
+        });
+      };
+    });
+  }
+
+  /* -------------------------------- chats ------------------------------- */
+  async function renderChats(q) {
+    const d = await adminApi('/chats?q=' + encodeURIComponent(q || ''));
+    $('#aBody').innerHTML = `
+      <div class="toolbar"><input class="search" id="cSearch" placeholder="Search chat titles…" value="${escapeAttr(q || '')}" />
+        <span class="mini">${d.chats.length} chats</span></div>
+      <div class="panel"><div class="p-body tight"><div class="tbl-wrap" style="border:0">
+        <table class="table"><thead><tr><th>Title</th><th>User</th><th>Model</th><th>Msgs</th><th>Tokens</th><th>Updated</th><th></th></tr></thead>
+        <tbody>${d.chats.map((c) => `<tr>
+          <td class="ellipsis" style="max-width:240px">${escapeHtml(c.title)}</td>
+          <td><div class="u-cell"><div><div class="u-n">${escapeHtml(c.user ? c.user.name : '—')}</div><div class="u-e">${escapeHtml(c.user ? c.user.email : '')}</div></div></div></td>
+          <td class="mini">${escapeHtml(c.modelName || 'Auto')}</td>
+          <td class="mini">${c.messages}</td>
+          <td class="mini">${num(c.tokensUsed)}</td>
+          <td class="mini">${timeAgo(c.updatedAt)}</td>
+          <td><div class="actions"><button class="btn btn-ghost btn-xs" data-vc="${c.id}">View</button>
+            <button class="btn btn-danger btn-xs" data-dc="${c.id}">Del</button></div></td>
+        </tr>`).join('')}</tbody></table>
+      </div></div></div>`;
+
+    $('#cSearch').oninput = APP.debounce((e) => renderChats(e.target.value), 320);
+    $$('[data-vc]').forEach((b) => {
+      b.onclick = async () => {
+        const out = await adminApi('/chats/' + b.dataset.vc);
+        modal({
+          title: escapeHtml(out.chat.title),
+          wide: true,
+          body: `<p class="hint" style="margin-bottom:12px">${escapeHtml(out.user ? out.user.email : '')} · ${escapeHtml(out.chat.modelName || 'Auto')} · ${(out.chat.messages || []).length} messages</p>
+                 <div style="max-height:52vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px">
+                 ${(out.chat.messages || []).map((m) => `<div style="padding:10px 13px;border-radius:11px;font-size:13px;line-height:1.6;
+                   background:${m.role === 'user' ? 'rgba(99,102,241,.14)' : 'rgba(255,255,255,.045)'};
+                   border:1px solid var(--line)">
+                   <div class="mini" style="font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">${m.role}</div>
+                   <div style="white-space:pre-wrap">${escapeHtml(m.content)}</div></div>`).join('')}
+                 </div>`
+        });
+      };
+    });
+    $$('[data-dc]').forEach((b) => {
+      b.onclick = async () => {
+        const ok = await confirmBox('Delete this chat?', { ok: 'Delete', danger: true });
+        if (!ok) return;
+        await adminApi('/chats/' + b.dataset.dc, { method: 'DELETE' });
+        renderChats(q);
+      };
+    });
+  }
+
+  /* ------------------------------ settings ------------------------------ */
+  async function renderSettings() {
+    const d = await adminApi('/settings');
+    const s = d.settings;
+    cache.settings = s;
+    $('#aBody').innerHTML = `
+      <div class="grid g2">
+        <div class="panel">
+          <div class="p-head"><span class="p-title">Brand & behaviour</span></div>
+          <div class="p-body">
+            <div class="form-grid">
+              <div class="f-row"><label>Brand name</label><input class="input" id="sBrand" value="${escapeAttr(s.brandName)}" /></div>
+              <div class="f-row"><label>Tagline</label><input class="input" id="sTag" value="${escapeAttr(s.tagline)}" /></div>
+              <div class="f-row"><label>Tokens per message</label><input class="input" id="sTPM" type="number" value="${s.tokensPerMessage}" /></div>
+              <div class="f-row"><label>Tokens per 1,000 chars</label><input class="input" id="sTPC" type="number" value="${s.tokensPer1kChars}" /></div>
+              <div class="f-row"><label>Free signup tokens</label><input class="input" id="sFree" type="number" value="${s.freeSignupTokens}" /></div>
+              <div class="f-row"><label>Max upload (MB)</label><input class="input" id="sUp" type="number" value="${s.maxUploadMb}" /></div>
+              <div class="f-row"><label>Max files per chat</label><input class="input" id="sUpC" type="number" value="${s.maxUploadsPerChat}" /></div>
+              <div class="f-row"><label>Max prompt chars</label><input class="input" id="sPrompt" type="number" value="${s.maxPromptChars}" /></div>
+            </div>
+            <div class="divider"></div>
+            <div class="set-row"><div><div class="set-l">Charge by message length</div><div class="set-s">Adds tokens for long prompts</div></div>
+              <label class="switch"><input type="checkbox" id="sCharge" ${s.chargeByLength ? 'checked' : ''} /><span></span></label></div>
+            <div class="set-row"><div><div class="set-l">Sign ups open</div><div class="set-s">Allow new accounts</div></div>
+              <label class="switch"><input type="checkbox" id="sSignup" ${s.signupEnabled ? 'checked' : ''} /><span></span></label></div>
+            <div class="set-row"><div><div class="set-l">Google login</div><div class="set-s">Continue with Google</div></div>
+              <label class="switch"><input type="checkbox" id="sGoogle" ${s.googleLogin ? 'checked' : ''} /><span></span></label></div>
+            <div class="set-row"><div><div class="set-l">Email login</div><div class="set-s">Email + password</div></div>
+              <label class="switch"><input type="checkbox" id="sEmail" ${s.emailLogin ? 'checked' : ''} /><span></span></label></div>
+            <div class="set-row"><div><div class="set-l">Maintenance mode</div><div class="set-s">Block new chats for everyone</div></div>
+              <label class="switch"><input type="checkbox" id="sMaint" ${s.maintenance ? 'checked' : ''} /><span></span></label></div>
+            <button class="btn btn-primary btn-block" style="margin-top:16px" id="saveSettings">Save all settings</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="p-head"><span class="p-title">Payments</span></div>
+          <div class="p-body">
+            <div class="f-row" style="margin-bottom:12px"><label>Gateway</label>
+              <select class="input" id="sPayMode">
+                ${['manual', 'razorpay', 'cashfree'].map((m) => `<option value="${m}" ${s.payment.mode === m ? 'selected' : ''}>${m}</option>`).join('')}
+              </select></div>
+            <div class="sec-t">Manual UPI</div>
+            <div class="form-grid">
+              <div class="f-row"><label>UPI ID</label><input class="input" id="sUpi" value="${escapeAttr(s.payment.upiId || '')}" /></div>
+              <div class="f-row"><label>Payee name</label><input class="input" id="sUpiName" value="${escapeAttr(s.payment.upiName || '')}" /></div>
+              <div class="f-row full"><label>QR image URL (optional)</label><input class="input" id="sQr" value="${escapeAttr(s.payment.qrImage || '')}" placeholder="https://…/qr.png" /></div>
+              <div class="f-row full"><label>Instructions shown to buyers</label><textarea class="input" id="sInstr" rows="3">${escapeAttr(s.payment.instructions || '')}</textarea></div>
+            </div>
+            <div class="sec-t">Razorpay</div>
+            <div class="form-grid">
+              <div class="f-row"><label>Key ID</label><input class="input" id="sRzpId" value="${escapeAttr(s.payment.razorpayKeyId || '')}" /></div>
+              <div class="f-row"><label>Key secret</label><input class="input" id="sRzpSecret" type="password" value="${escapeAttr(s.payment.razorpayKeySecret || '')}" /></div>
+            </div>
+            <div class="sec-t">Cashfree</div>
+            <div class="form-grid">
+              <div class="f-row"><label>App ID</label><input class="input" id="sCfId" value="${escapeAttr(s.payment.cashfreeAppId || '')}" /></div>
+              <div class="f-row"><label>Secret</label><input class="input" id="sCfSecret" type="password" value="${escapeAttr(s.payment.cashfreeSecret || '')}" /></div>
+              <div class="f-row"><label>Environment</label><select class="input" id="sCfEnv">
+                <option value="sandbox" ${s.payment.cashfreeEnv !== 'production' ? 'selected' : ''}>sandbox</option>
+                <option value="production" ${s.payment.cashfreeEnv === 'production' ? 'selected' : ''}>production</option></select></div>
+            </div>
+            <button class="btn btn-primary btn-block" style="margin-top:16px" id="savePay">Save payment settings</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px">
+        <div class="p-head"><span class="p-title">Storage</span>
+          <span class="badge ${d.firebase.ok ? 'badge-ok' : 'badge-warn'}" style="margin-left:auto">${escapeHtml(d.firebase.backend)}</span></div>
+        <div class="p-body">
+          <p class="hint">Database URL: <span class="mono">${escapeHtml(d.firebase.url)}</span></p>
+          <p class="hint" style="margin-top:6px">When Firebase is unreachable the server keeps writing to its local disk so nothing is ever lost, then syncs again.</p>
+          <button class="btn btn-ghost btn-sm" style="margin-top:12px" id="flush2">${svgIcon('refresh')} Force sync now</button>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px">
+        <div class="p-head"><span class="p-title">Broadcast message</span></div>
+        <div class="p-body">
+          <div class="f-row"><label>Show a banner to every user</label>
+            <input class="input" id="bcMsg" placeholder="e.g. New Claude 4 model is live!" /></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:10px" id="bcSend">Send broadcast</button>
+        </div>
+      </div>`;
+
+    $('#saveSettings').onclick = async (ev) => {
+      APP.busy(ev.currentTarget, true);
+      try {
+        await adminApi('/settings', {
+          method: 'PATCH',
+          body: {
+            brandName: $('#sBrand').value,
+            tagline: $('#sTag').value,
+            tokensPerMessage: Number($('#sTPM').value),
+            tokensPer1kChars: Number($('#sTPC').value),
+            freeSignupTokens: Number($('#sFree').value),
+            maxUploadMb: Number($('#sUp').value),
+            maxUploadsPerChat: Number($('#sUpC').value),
+            maxPromptChars: Number($('#sPrompt').value),
+            chargeByLength: $('#sCharge').checked,
+            signupEnabled: $('#sSignup').checked,
+            googleLogin: $('#sGoogle').checked,
+            emailLogin: $('#sEmail').checked,
+            maintenance: $('#sMaint').checked
+          }
+        });
+        toast('Settings saved.', 'ok');
+      } catch (e) {
+        toast(e.message, 'err');
+      }
+      APP.busy(ev.currentTarget, false);
+    };
+
+    $('#savePay').onclick = async (ev) => {
+      APP.busy(ev.currentTarget, true);
+      try {
+        await adminApi('/settings', {
+          method: 'PATCH',
+          body: {
+            payment: {
+              mode: $('#sPayMode').value,
+              upiId: $('#sUpi').value,
+              upiName: $('#sUpiName').value,
+              qrImage: $('#sQr').value,
+              instructions: $('#sInstr').value,
+              razorpayKeyId: $('#sRzpId').value,
+              razorpayKeySecret: $('#sRzpSecret').value,
+              cashfreeAppId: $('#sCfId').value,
+              cashfreeSecret: $('#sCfSecret').value,
+              cashfreeEnv: $('#sCfEnv').value
+            }
+          }
+        });
+        toast('Payment settings saved.', 'ok');
+      } catch (e) {
+        toast(e.message, 'err');
+      }
+      APP.busy(ev.currentTarget, false);
+    };
+
+    $('#flush2').onclick = async (ev) => {
+      APP.busy(ev.currentTarget, true);
+      const out = await adminApi('/flush', { method: 'POST', body: {} });
+      toast(out.firebaseOk ? 'Synced to Firebase.' : 'Saved locally (Firebase unreachable).', out.firebaseOk ? 'ok' : 'warn');
+      APP.busy(ev.currentTarget, false);
+    };
+
+    $('#bcSend').onclick = async (ev) => {
+      const msg = $('#bcMsg').value.trim();
+      if (!msg) return toast('Type a message first.', 'err');
+      await adminApi('/broadcast', { body: { message: msg } });
+      toast('Broadcast sent to all users.', 'ok');
+      $('#bcMsg').value = '';
+    };
+  }
+
+  /* --------------------------------- logs ------------------------------- */
+  async function renderLogs(type) {
+    const d = await adminApi('/logs?type=' + encodeURIComponent(type || ''));
+    const types = ['', 'admin', 'auth', 'payment', 'provider', 'chat'];
+    $('#aBody').innerHTML = `
+      <div class="toolbar">
+        <div class="pill-tabs">${types.map((t) => `<button data-lt="${t}" class="${(type || '') === t ? 'active' : ''}">${t || 'All'}</button>`).join('')}</div>
+        <button class="btn btn-danger btn-sm" style="margin-left:auto" id="clearLogs">Clear logs</button>
+      </div>
+      <div class="panel"><div class="p-body tight">
+        ${d.logs.map((l) => `<div class="prov">
+          <span class="chipx" style="background:rgba(99,102,241,.16);color:#c7d0ff">${escapeHtml(l.type)}</span>
+          <div style="flex:1;min-width:0"><div class="pv-n">${escapeHtml(l.message)}</div>
+          <div class="pv-m">${escapeHtml(l.userId || '')} ${l.providerId ? '· ' + escapeHtml(l.providerId) : ''}</div></div>
+          <span class="mini nowrap">${fmtDate(l.at)}</span>
+        </div>`).join('') || '<p class="hint" style="padding:18px">No logs.</p>'}
+      </div></div>`;
+    $$('[data-lt]').forEach((b) => (b.onclick = () => renderLogs(b.dataset.lt)));
+    $('#clearLogs').onclick = async () => {
+      const ok = await confirmBox('Clear every activity log?', { ok: 'Clear', danger: true });
+      if (!ok) return;
+      await adminApi('/logs', { method: 'DELETE' });
+      renderLogs();
+    };
+  }
+
+  /* --------------------------------- init ------------------------------- */
+  (async function init() {
+    if (adminToken) {
+      try {
+        await adminApi('/stats');
+        return enter();
+      } catch (e) {
+        adminToken = '';
+        ls.del('adminToken');
+      }
+    }
+    $('#loginView').style.display = 'grid';
+  })();
+})();
+</script>
+</body>
+</html>
